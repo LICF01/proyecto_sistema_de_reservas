@@ -18,7 +18,7 @@ public class HabitacionService {
         this.habitacionRepository = habitacionRepository;
     }
 
-    public List<Habitacion> getHabitacion() {
+    public List<Habitacion> getHabitaciones() {
         return habitacionRepository.findAll();
     }
 
