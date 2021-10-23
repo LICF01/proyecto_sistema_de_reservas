@@ -1,6 +1,8 @@
 package com.Hotel_booking.WebApp.Habitacion;
 
+import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,10 +26,10 @@ public class HabitacionService {
 
     if(validarTipoHabitacion(hab.getTipoHabitacion(), hab.getCantidadPersonas())) {
         habitacionRepository.save(hab);
-        return "Habitación correctamente ingresada";
+        throw new CustomErrorException(HttpStatus.OK, "Habitación correctamente ingresada");
     }
     else
-        return "Debe ingresar los datos correctos";
+        throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Datos ingresados incorrectos");
     }
 
     @Transactional
@@ -37,30 +39,29 @@ public class HabitacionService {
         Habitacion hab = habitacionRepository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
 
         if (habNewInfo.getNombre().trim().equals(""))
-            return "Ingresar un nombre válido";
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Ingresar un nombre válido");
 
         if(!validarTipoHabitacion(habNewInfo.getTipoHabitacion(), habNewInfo.getCantidadPersonas()))
-            return "El tipo de habitación y la cantidad de personas no concuerdan";
-
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "El tipo de habitación y la cantidad de personas no concuerdan");
 
         if (habNewInfo.getTVHabitacion() == null)
-            return "Debes seleccionar un tipo de TV";
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Debes seleccionar un tipo de TV");
 
 
         if (habNewInfo.getCocinaSN() == null)
-            return "Debes seleccionar un valor para la cocina";
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Debes seleccionar un valor para la cocina");
 
         if (habNewInfo.getCamaExtraSN() == null)
-            return "Debes seleccionar un el valor de cama extra";
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Debes seleccionar un el valor de cama extra");
 
         if (habNewInfo.getPrecioAdulto() < 0)
-            return "Debes ingresar un precio para adultos válido";
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Debes ingresar un precio para adultos válido");
 
         if (habNewInfo.getPrecioNinho() < 0)
-            return "Debes ingresar un precio para niños válido";
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Debes ingresar un precio para niños válido");
 
         if (habNewInfo.getPrecioMinimo() <= 0)
-            return "Debes ingresar un precio mínimo mayor a cero";
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Debes ingresar un precio mínimo mayor a cero");
 
 
         hab.setNombre(habNewInfo.getNombre());
@@ -73,7 +74,9 @@ public class HabitacionService {
         hab.setPrecioNinho(habNewInfo.getPrecioNinho());
         hab.setPrecioMinimo(habNewInfo.getPrecioMinimo());
         habitacionRepository.save(hab);
-        return "Habitación correctamente modificada";
+
+        throw new CustomErrorException(HttpStatus.OK, "Habitación correctamente modificada");
+
     }
 
     public boolean validarTipoHabitacion (TipoHabitacion tipo, Integer cantidad) {
@@ -104,7 +107,7 @@ public class HabitacionService {
     }
 
     private String mensaje() {
-        return "Número de habitación inexistente";
+        throw new CustomErrorException(HttpStatus.NOT_FOUND, "Número de habitación inexistente");
     }
 
 
