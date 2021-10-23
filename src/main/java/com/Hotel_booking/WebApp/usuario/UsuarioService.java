@@ -77,6 +77,6 @@ public class UsuarioService implements UserDetailsService {
 
         // TODO: Enviar Token de confirmacion
 
-        return "usuario registrado";
+        throw new CustomErrorException(HttpStatus.OK, "Usuario registrado");
     }
 }
