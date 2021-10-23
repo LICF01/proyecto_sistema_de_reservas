@@ -20,7 +20,7 @@ public class UsuarioConfig {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(UsuarioRepository usuarioRepository) {
+    CommandLineRunner usuarioConfigRunner(UsuarioRepository usuarioRepository) {
         return args -> {
         Usuario lucas = new Usuario(
                 "Lucas",

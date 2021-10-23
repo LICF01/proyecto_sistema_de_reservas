@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class HabitacionConfig {
 
     @Bean
-    CommandLineRunner commandLineRunner(HabitacionRepository habitacionRepository) {
+    CommandLineRunner habitacionConfigRunner(HabitacionRepository habitacionRepository) {
         return args -> {
             Habitacion guayabo = new Habitacion(
                     "Guayabo",

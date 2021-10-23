@@ -14,7 +14,7 @@ import java.util.List;
 public class ClienteConfig {
 
     @Bean
-    CommandLineRunner clientRunner(ClienteRepository clienteRepository) {
+    CommandLineRunner clienteConfigRunner(ClienteRepository clienteRepository) {
         return args -> {
             Cliente Alex = new Cliente(
                     "Alexandra",
