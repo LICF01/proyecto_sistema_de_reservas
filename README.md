@@ -19,6 +19,7 @@
 - Spring Security
 - Project Lombok
 - Maven
+- PostgreSQL
 
 ---
 Esta es la documentación del sistema de reservas, el mismo se encuentra disponible en siguiente [repositorio](https://github.com/LICF01/proyecto_sistema_de_reservas.git)
