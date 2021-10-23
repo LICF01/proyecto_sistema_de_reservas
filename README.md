@@ -26,7 +26,7 @@ Esta es la documentación del sistema de reservas, el mismo se encuentra disponi
 
 [Documentación de la API del Sistema de Reservas](https://documenter.getpostman.com/view/17729901/UV5agbQD)
 
-Se debe crear la base de datos que se va a utilizar manualmente en PostgresSQL, preferentemente llamar a la base de datos "hotel_booking" para mayor fluidez en la ejecución. ***Se debe de cambiar también la contraseña que se encuentra definida en properties, siendo su acceso:*** `/src/main/resources/static/application.properties`
+Se debe crear la base de datos que se va a utilizar manualmente en PostgresSQL, preferentemente llamar a la base de datos "hotel_booking" para mayor fluidez en su ejecución. ***Se debe de cambiar también la contraseña que se encuentra definida en properties, siendo su acceso:*** `/src/main/resources/static/application.properties`
 
 Ejecute la clase principal `Application` siguiendo esta [guía de la documentación oficial de Spring Boot](https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/using-boot-running-your-application.html)
 
