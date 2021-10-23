@@ -18,8 +18,8 @@ public class HabitacionController {
     }
 
     @GetMapping
-    public List<Habitacion> getHabitacion() {
-        return habitacionService.getHabitacion();
+    public List<Habitacion> getHabitaciones() {
+        return habitacionService.getHabitaciones();
     }
 
     @PostMapping
