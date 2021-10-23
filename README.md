@@ -24,6 +24,10 @@
 ---
 Esta es la documentación del sistema de reservas, el mismo se encuentra disponible en siguiente [repositorio](https://github.com/LICF01/proyecto_sistema_de_reservas.git)
 
+[Documentación de la API del Sistema de Reservas](https://documenter.getpostman.com/view/17729901/UV5agbQD)
+
+Se debe crear la base de datos que se va a utilizar manualmente en PostgresSQL
+
 Ejecute la clase principal `Application` siguiendo esta [guía de la documentación oficial de Spring Boot](https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/using-boot-running-your-application.html)
 
 Los siguientes endpoints que son capaces de recibir requests son las siguientes
