@@ -1,4 +1,4 @@
----
+
 ## Integrantes
 - Katia Micaela Adorno Ríos 
 - Lia Fiorella Cano Forcadell 
@@ -22,9 +22,11 @@
 - PostgreSQL
 
 ---
+
 Esta es la documentación del sistema de reservas, el mismo se encuentra disponible en siguiente [repositorio](https://github.com/LICF01/proyecto_sistema_de_reservas.git)
 
-[Documentación de la API del Sistema de Reservas](https://documenter.getpostman.com/view/17729901/UV5agbQD)
+En este README, se encuentra disponible parte de la documentación, se puede ver la versión completa en el siguiente link:
+[Documentación de la API del Sistema de Reservas](https://documenter.getpostman.com/view/17729901/UV5agbnL)
 
 Se debe crear la base de datos que se va a utilizar manualmente en PostgresSQL, preferentemente llamar a la base de datos "hotel_booking" para mayor fluidez en su ejecución. ***Se debe de cambiar también la contraseña que se encuentra definida en properties, siendo su acceso:*** `/src/main/resources/static/application.properties`
 
