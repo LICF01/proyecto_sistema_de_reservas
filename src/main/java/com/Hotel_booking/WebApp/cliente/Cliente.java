@@ -2,6 +2,7 @@ package com.Hotel_booking.WebApp.cliente;
 
 import com.Hotel_booking.WebApp.Genero;
 import com.Hotel_booking.WebApp.persona.Persona;
+import com.Hotel_booking.WebApp.reserva.Reserva;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -42,6 +44,9 @@ public class Cliente extends Persona {
 
     @Column(name = "nro_ruc", columnDefinition = "TEXT")
     private String nroRuc;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
+    private List<Reserva> reservas;
 
 
 
