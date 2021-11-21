@@ -106,6 +106,16 @@ public class HabitacionService {
         return false;
     }
 
+    public void eliminarHabitacion(Long IDHabitacion) {
+        boolean existe = habitacionRepository.existsById(IDHabitacion);
+        if(!existe)
+            mensaje();
+        else {
+            habitacionRepository.deleteById(IDHabitacion);
+            throw new CustomErrorException(HttpStatus.OK, "Habitación correctamente eliminada");
+        }
+    }
+
     private String mensaje() {
         throw new CustomErrorException(HttpStatus.NOT_FOUND, "Número de habitación inexistente");
     }
