@@ -1,10 +1,7 @@
 package com.Hotel_booking.WebApp.registro;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -18,4 +15,9 @@ public class RegistroController {
         return registroService.register(request);
     }
 
+    // El servicio recibe un token a confirmar
+    @GetMapping(path = "confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return registroService.confirmToken(token);
+    }
 }

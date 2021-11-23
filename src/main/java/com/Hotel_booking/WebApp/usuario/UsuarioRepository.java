@@ -1,6 +1,7 @@
 package com.Hotel_booking.WebApp.usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +14,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Query("SELECT s FROM Usuario s WHERE s.mail = ?1")
     Optional<Usuario> findUsuarioByEmail(String mail);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Usuario a " +
+            "SET a.enabled = TRUE WHERE a.mail = ?1")
+    int enableUsuario(String email);
 
 }
