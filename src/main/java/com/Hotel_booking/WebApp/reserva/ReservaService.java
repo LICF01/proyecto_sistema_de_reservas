@@ -6,12 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
 public class ReservaService {
 
     private final ReservaRepository reservaRepository;
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Autowired
     public ReservaService(ReservaRepository reservaRepository) {
@@ -24,7 +27,12 @@ public class ReservaService {
 
     public String agregarNuevaReserva(Reserva res) {
             //AGREGAR VALIDACIONES
-            throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente ingresada");
+            String fechaIngreso = dateFormat.format(res.getFechaIngreso());
+            String fechaSalida = dateFormat.format(res.getFechaSalida());
+            long codHabitacion = res.getHabitacion().getCodHabitacion();
+            buscarReserva(fechaIngreso, fechaSalida, codHabitacion);
+
+            throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente agregada");
     }
 
     @Transactional
@@ -46,6 +54,11 @@ public class ReservaService {
             reservaRepository.deleteById(IDReserva);
             throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente eliminada");
         }
+    }
+
+    public boolean buscarReserva(String fechaIngreso, String fechaSalida, long codHabitacion) {
+        System.out.println(reservaRepository.findByFechaIngreso(fechaIngreso, fechaSalida, codHabitacion));
+        return false;
     }
 
     private String mensaje() {

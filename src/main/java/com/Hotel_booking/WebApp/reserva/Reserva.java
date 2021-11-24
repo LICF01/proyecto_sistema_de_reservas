@@ -43,9 +43,15 @@ public class Reserva {
     @JsonFormat(pattern="dd/MM/yyyy")
     private Date fechaIngreso;
 
-    @Column(name = "Cantidad_noches")
-    @Min(value = 1, message = "Debe ingresar un número mayor a 0")
-    private int cantidadNoches;
+    @Column(name = "Fecha_Salida")
+    @NotNull(message = "Ingresar fecha de salida")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private Date fechaSalida;
+
+//    @Column(name = "Cantidad_noches")
+//    @Min(value = 1, message = "Debe ingresar un número mayor a 0")
+//    private int cantidadNoches;
 
     @Column(name = "Cantidad_Adultos")
     @Min(value = 1, message = "Debe ingresar un número mayor a 0")
@@ -63,18 +69,11 @@ public class Reserva {
     @Column(name = "Precio_Total")
     private Integer precioTotal;
 
-    public Reserva(Cliente cliente, Date fechaIngreso, int cantidadNoches, int cantidadAdultos, int cantidadNinhos, Date fechaReserva, Integer precioTotal) {
+    public Reserva(Cliente cliente, Habitacion habitacion, Date fechaIngreso, Date fechaSalida, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
         this.cliente = cliente;
+        this.habitacion = habitacion;
         this.fechaIngreso = fechaIngreso;
-        this.cantidadNoches = cantidadNoches;
-        this.cantidadAdultos = cantidadAdultos;
-        this.cantidadNinhos = cantidadNinhos;
-        this.precioTotal = precioTotal;
-    }
-
-    public Reserva(Date fechaIngreso, int cantidadNoches, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
-        this.fechaIngreso = fechaIngreso;
-        this.cantidadNoches = cantidadNoches;
+        this.fechaSalida = fechaSalida;
         this.cantidadAdultos = cantidadAdultos;
         this.cantidadNinhos = cantidadNinhos;
         this.precioTotal = precioTotal;
