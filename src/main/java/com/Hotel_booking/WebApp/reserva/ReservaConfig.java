@@ -18,10 +18,10 @@ public class ReservaConfig {
     CommandLineRunner reservaConfigRunner(ReservaRepository reservaRepository, ClienteService clienteService, HabitacionService habitacionService) {
         return args -> {
             Reserva reserva1 = new Reserva(
-                    clienteService.get(3L),
+                    //clienteService.get(3L),
                     habitacionService.getHabitacionbyID(1L),
-                    new SimpleDateFormat("dd/MM/yyyy").parse("15/03/2021"),
-                    new SimpleDateFormat("dd/MM/yyyy").parse("17/03/2021"),
+                    new SimpleDateFormat("yyyy/MM/dd").parse("2021/03/15"),
+                    new SimpleDateFormat("yyyy/MM/dd").parse("2021/03/17"),
                     2,
                     0,
                     500000

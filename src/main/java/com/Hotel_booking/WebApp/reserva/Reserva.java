@@ -5,13 +5,11 @@ import com.Hotel_booking.WebApp.cliente.Cliente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -29,9 +27,9 @@ public class Reserva {
     @Column(name = "Reserva_ID")
     private long codReserva;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "cliente_id")
+//    private Cliente cliente;
 
     @OneToOne
     @JoinColumn(name = "Habitacion_ID", referencedColumnName = "Habitacion_ID")
@@ -40,13 +38,13 @@ public class Reserva {
     @Column(name = "Fecha_Ingreso")
     @NotNull(message = "Ingresar fecha de ingreso")
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(pattern="yyyy/MM/dd")
     private Date fechaIngreso;
 
     @Column(name = "Fecha_Salida")
     @NotNull(message = "Ingresar fecha de salida")
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(pattern="yyyy/MM/dd")
     private Date fechaSalida;
 
 //    @Column(name = "Cantidad_noches")
@@ -69,13 +67,23 @@ public class Reserva {
     @Column(name = "Precio_Total")
     private Integer precioTotal;
 
-    public Reserva(Cliente cliente, Habitacion habitacion, Date fechaIngreso, Date fechaSalida, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
-        this.cliente = cliente;
-        this.habitacion = habitacion;
-        this.fechaIngreso = fechaIngreso;
-        this.fechaSalida = fechaSalida;
-        this.cantidadAdultos = cantidadAdultos;
-        this.cantidadNinhos = cantidadNinhos;
-        this.precioTotal = precioTotal;
-    }
+//    public Reserva(Cliente cliente, Habitacion habitacion, Date fechaIngreso, Date fechaSalida, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
+//        this.cliente = cliente;
+//        this.habitacion = habitacion;
+//        this.fechaIngreso = fechaIngreso;
+//        this.fechaSalida = fechaSalida;
+//        this.cantidadAdultos = cantidadAdultos;
+//        this.cantidadNinhos = cantidadNinhos;
+//        this.precioTotal = precioTotal;
+//    }
+
+
+        public Reserva(Habitacion habitacion, Date fechaIngreso, Date fechaSalida, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
+            this.habitacion = habitacion;
+            this.fechaIngreso = fechaIngreso;
+            this.fechaSalida = fechaSalida;
+            this.cantidadAdultos = cantidadAdultos;
+            this.cantidadNinhos = cantidadNinhos;
+            this.precioTotal = precioTotal;
+        }
 }

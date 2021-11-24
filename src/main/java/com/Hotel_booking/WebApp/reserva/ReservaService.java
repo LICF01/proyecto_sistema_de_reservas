@@ -28,15 +28,15 @@ public class ReservaService {
     }
 
     public String agregarNuevaReserva(Reserva res) {
-            //AGREGAR VALIDACIONES
+
             String fechaIngreso = dateFormat.format(res.getFechaIngreso());
             String fechaSalida = dateFormat.format(res.getFechaSalida());
             long codHabitacion = res.getHabitacion().getCodHabitacion();
 
-            Optional<Reserva> disponible = reservaRepository.verificarDisponibilidad(codHabitacion, fechaIngreso, fechaSalida);
-            if(disponible.isPresent()) {
-            throw new IllegalStateException("Fecha no disponible");
-            }
+          Optional<Reserva> disponible = reservaRepository.findByHabiatacionFechaIngresoFechaSalida(codHabitacion, fechaIngreso, fechaSalida);
+           if(disponible.isPresent()) {
+               throw new CustomErrorException(HttpStatus.CONFLICT, "La habitacion no se encuentra disponible en la fecha solicitada");
+                }
             else {
                 throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente agregada");
             }

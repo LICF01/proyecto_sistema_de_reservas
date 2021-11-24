@@ -45,8 +45,8 @@ public class Cliente extends Persona {
     @Column(name = "nro_ruc", columnDefinition = "TEXT")
     private String nroRuc;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
-    private List<Reserva> reservas;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
+//    private List<Reserva> reservas;
 
 
 
