@@ -1,6 +1,7 @@
 package com.Hotel_booking.WebApp.reserva;
 
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
+import com.Hotel_booking.WebApp.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import javax.transaction.Transactional;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservaService {
@@ -30,9 +32,15 @@ public class ReservaService {
             String fechaIngreso = dateFormat.format(res.getFechaIngreso());
             String fechaSalida = dateFormat.format(res.getFechaSalida());
             long codHabitacion = res.getHabitacion().getCodHabitacion();
-            buscarReserva(fechaIngreso, fechaSalida, codHabitacion);
 
-            throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente agregada");
+            Optional<Reserva> disponible = reservaRepository.verificarDisponibilidad(codHabitacion, fechaIngreso, fechaSalida);
+            if(disponible.isPresent()) {
+            throw new IllegalStateException("Fecha no disponible");
+            }
+            else {
+                throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente agregada");
+            }
+
     }
 
     @Transactional
@@ -54,11 +62,6 @@ public class ReservaService {
             reservaRepository.deleteById(IDReserva);
             throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente eliminada");
         }
-    }
-
-    public boolean buscarReserva(String fechaIngreso, String fechaSalida, long codHabitacion) {
-        System.out.println(reservaRepository.findByFechaIngreso(fechaIngreso, fechaSalida, codHabitacion));
-        return false;
     }
 
     private String mensaje() {
