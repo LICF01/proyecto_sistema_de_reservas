@@ -93,7 +93,9 @@ public class UsuarioService implements UserDetailsService {
 
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        throw new CustomErrorException(HttpStatus.OK, "Usuario registrado" + " token: " + token);
+//        throw new CustomErrorException(HttpStatus.OK, "Usuario registrado" + " token: " + token);
+
+        return token;
 
     }
     public int enableUsuario(String email) {

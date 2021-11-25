@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "api/registro")
 public class RegistroController {
 
-    private RegistroService registroService;
+    private final RegistroService registroService;
 
     @PostMapping
     public String register(@RequestBody RegistroRequest request) {
