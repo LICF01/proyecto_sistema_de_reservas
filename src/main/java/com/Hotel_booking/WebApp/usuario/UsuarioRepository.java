@@ -17,7 +17,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     @Query("SELECT e FROM Usuario e WHERE e.mail = ?1")
     public Usuario findByEmail(String email);
-
+    
     @Transactional
     @Modifying
     @Query("UPDATE Usuario a " +
