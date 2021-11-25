@@ -51,6 +51,9 @@ public class UsuarioConfig {
                     UserRole.USER
             );
 
+            lucas.setEnabled(true);
+            ivan.setEnabled(true);
+
         usuarioRepository.saveAll(
                 List.of(lucas, ivan)
         );

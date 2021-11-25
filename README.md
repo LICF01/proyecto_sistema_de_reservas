@@ -15,6 +15,7 @@
 - Spring Boot Starter Web
 - Spring Boot Data JPA
 - Spring Boot Starter Validation
+- Spring Boot Starter Mail
 - Spring Boot Starter Tomcat
 - Spring Security
 - Project Lombok
@@ -51,3 +52,39 @@ Los siguientes usuarios estan predefinidos:
 | usuario2@gmail.com | user2      |
 
 Se puede probar un usuario personalizado enviando los datos correspondientes en formato JSON a `/registro`
+
+## Registro
+Al momento del registro el servicio devuelve un token generado para la confirmación y habilitación de la cuenta
+
+Se puede confirmar el token a traves del correo que es enviado al email utilizado durante el registro (Vea la sección Configuracion del servicio de email)
+o bien enviando un `GET`con el token generado al endpoint de confirmación
+
+- `/api/registro/confirm?token={TOKEN GENERADO}`
+
+Ejemplo:
+- `/api/registro/confirm?token=8aa97f0b-8fa7-456b-aea6-d130d769eeaa`
+
+No se podrá utilizar la cuenta mientras no se realice la confirmación
+
+## Configuración del servicio de Email
+Para utilizar esta funcionalidad debe especificar las propiedades del servidor de correo en el archivo application.properties
+
+El servicio esta configurado para utilizar el servidor SMTP de Gmail, solo debe ingresar el usuario y la contraseña de aplicacion
+en los campos `spring.mail.username=` y `spring.mail.password=` respectivamente como se muestra a continuación:
+
+```
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=USUARIO DEL SERVIDOR SMTP
+spring.mail.password=CONTRASEÑA DEL SERVIDOR SMTP
+```
+Tenga en cuenta que la contraseña no debe ser una contraseña normal de la cuenta de Gmail, sino una contraseña de aplicación 
+generada para nuestra cuenta de Google. Siga este [enlace](https://support.google.com/accounts/answer/185833) para ver los detalles y generar su contraseña de la aplicación de Google.
+
+Si cuenta con [Node.js](http://nodejs.org/) y [npm](https://npmjs.org/) puede utilizar [MailDev](https://maildev.github.io/maildev/) para pruebas locales, para el mismo solo debe cambiar el host y el puerto
+
+Ejemplo:
+```
+spring.mail.host=localhost
+spring.mail.port=1025
+```

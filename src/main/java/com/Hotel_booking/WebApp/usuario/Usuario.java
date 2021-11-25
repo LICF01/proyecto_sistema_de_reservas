@@ -15,12 +15,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString
 @Entity
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "usuario")
 @PrimaryKeyJoinColumn(name = "id")
 public class Usuario extends Persona implements UserDetails {
@@ -49,7 +47,7 @@ public class Usuario extends Persona implements UserDetails {
     private UserRole tipoUsuario;
 
     private Boolean locked = false;
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
 
     public Usuario(String nombre,
