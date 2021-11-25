@@ -51,7 +51,7 @@ public class CambioService
     public String resetPassword(String token, String password)
     {
         Optional<Usuario> userOptional = Optional
-                .ofNullable(confirmationTokenRepository.findByResetPassword(token));
+                .ofNullable(usuarioRepository.findyByToken(token));
 
         if (!userOptional.isPresent())
         {
