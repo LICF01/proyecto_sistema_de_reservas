@@ -1,14 +1,12 @@
 package com.Hotel_booking.WebApp.reserva;
 
+import com.Hotel_booking.WebApp.Habitacion.HabitacionService;
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
-import com.Hotel_booking.WebApp.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +14,12 @@ import java.util.Optional;
 public class ReservaService {
 
     private final ReservaRepository reservaRepository;
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private final HabitacionService habitacionService;
 
     @Autowired
-    public ReservaService(ReservaRepository reservaRepository) {
+    public ReservaService(ReservaRepository reservaRepository, HabitacionService habitacionService) {
         this.reservaRepository = reservaRepository;
+        this.habitacionService = habitacionService;
     }
 
     public List<Reserva> getReserva() {
@@ -29,15 +28,14 @@ public class ReservaService {
 
     public String agregarNuevaReserva(Reserva res) {
 
-            String fechaIngreso = dateFormat.format(res.getFechaIngreso());
-            String fechaSalida = dateFormat.format(res.getFechaSalida());
-            long codHabitacion = res.getHabitacion().getCodHabitacion();
+        res.setPrecioTotal(calcularMontoReserva(res));
 
-          Optional<Reserva> disponible = reservaRepository.findByHabiatacionFechaIngresoFechaSalida(codHabitacion, fechaIngreso, fechaSalida);
+          Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(res.getHabitacion().getCodHabitacion(), res.getFechaIngreso(), res.getFechaSalida());
            if(disponible.isPresent()) {
-               throw new CustomErrorException(HttpStatus.CONFLICT, "La habitacion no se encuentra disponible en la fecha solicitada");
+               throw new CustomErrorException(HttpStatus.FOUND, "La habitacion no se encuentra disponible en la fecha solicitada");
                 }
             else {
+               reservaRepository.save(res);
                 throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente agregada");
             }
 
@@ -63,6 +61,21 @@ public class ReservaService {
             throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente eliminada");
         }
     }
+
+    private Integer calcularMontoReserva(Reserva res) {
+
+        int montoAdultos = res.getCantidadAdultos() * habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getPrecioAdulto();
+
+        int montoNinhos = res.getCantidadNinhos() * habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getPrecioNinho();
+
+        int montoTotal = montoAdultos + montoNinhos;
+
+        if (montoTotal < habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getPrecioMinimo())
+            montoTotal = habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getPrecioMinimo();
+
+        return montoTotal;
+    }
+
 
     private String mensaje() {
         throw new CustomErrorException(HttpStatus.NOT_FOUND, "Número de reserva inexistente");

@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -37,19 +37,13 @@ public class Reserva {
 
     @Column(name = "Fecha_Ingreso")
     @NotNull(message = "Ingresar fecha de ingreso")
-    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern="yyyy/MM/dd")
-    private Date fechaIngreso;
+    private LocalDate fechaIngreso;
 
     @Column(name = "Fecha_Salida")
     @NotNull(message = "Ingresar fecha de salida")
-    @Temporal(TemporalType.DATE)
     @JsonFormat(pattern="yyyy/MM/dd")
-    private Date fechaSalida;
-
-//    @Column(name = "Cantidad_noches")
-//    @Min(value = 1, message = "Debe ingresar un número mayor a 0")
-//    private int cantidadNoches;
+    private LocalDate fechaSalida;
 
     @Column(name = "Cantidad_Adultos")
     @Min(value = 1, message = "Debe ingresar un número mayor a 0")
@@ -78,12 +72,13 @@ public class Reserva {
 //    }
 
 
-        public Reserva(Habitacion habitacion, Date fechaIngreso, Date fechaSalida, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
-            this.habitacion = habitacion;
-            this.fechaIngreso = fechaIngreso;
-            this.fechaSalida = fechaSalida;
-            this.cantidadAdultos = cantidadAdultos;
-            this.cantidadNinhos = cantidadNinhos;
-            this.precioTotal = precioTotal;
-        }
+    public Reserva(Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
+        this.habitacion = habitacion;
+        this.fechaIngreso = fechaIngreso;
+        this.fechaSalida = fechaSalida;
+        this.cantidadAdultos = cantidadAdultos;
+        this.cantidadNinhos = cantidadNinhos;
+        this.precioTotal = precioTotal;
+    }
 }
+
