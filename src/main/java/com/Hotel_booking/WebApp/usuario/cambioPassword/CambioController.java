@@ -81,7 +81,6 @@ public class CambioController
     
     
     /*El token verifica para asegurarse que la solicitud sea legítimo, actualiza la nueva contraseña del usuario y muestra un mensaje */
-    
     @PostMapping("/reset-password")
     public String processResetPassword(HttpServletRequest request, Model model)
     {
