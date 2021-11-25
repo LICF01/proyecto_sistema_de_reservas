@@ -30,13 +30,19 @@ public class ReservaService {
 
         res.setPrecioTotal(calcularMontoReserva(res));
 
-          Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(res.getHabitacion().getCodHabitacion(), res.getFechaIngreso(), res.getFechaSalida());
+        Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(res.getHabitacion().getCodHabitacion(), res.getFechaIngreso(), res.getFechaSalida());
            if(disponible.isPresent()) {
-               throw new CustomErrorException(HttpStatus.FOUND, "La habitacion no se encuentra disponible en la fecha solicitada");
+               throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La habitacion no se encuentra disponible en la fecha solicitada");
                 }
             else {
-               reservaRepository.save(res);
-                throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente agregada");
+                if(verificarCantidadPersonasHabitacion(res)) {
+                    reservaRepository.save(res);
+                    throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente agregada");
+                }
+                else {
+                    throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La habitacion no tiene disponibilidad para esa cantidad de personas");
+                }
+
             }
 
     }
@@ -75,6 +81,21 @@ public class ReservaService {
 
         return montoTotal;
     }
+
+    private boolean verificarCantidadPersonasHabitacion(Reserva res) {
+        int cantidadPersonasReserva;
+        int cantidadPersonasHabitacion;
+
+        if (habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getCamaExtraSN())
+            cantidadPersonasHabitacion = habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getCantidadPersonas() + 1;
+        else
+            cantidadPersonasHabitacion = habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getCantidadPersonas();
+
+        cantidadPersonasReserva = res.getCantidadAdultos() + res.getCantidadNinhos();
+
+        return (cantidadPersonasHabitacion >= cantidadPersonasReserva);
+    }
+
 
 
     private String mensaje() {
