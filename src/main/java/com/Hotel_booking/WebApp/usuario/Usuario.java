@@ -48,7 +48,8 @@ public class Usuario extends Persona implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = false;
 
-
+    private String token;
+    
     public Usuario(String nombre,
                    String apellido,
                    String mail,
