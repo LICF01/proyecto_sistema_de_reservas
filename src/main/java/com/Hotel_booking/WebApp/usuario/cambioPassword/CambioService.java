@@ -1,12 +1,13 @@
 package com.Hotel_booking.WebApp.usuario.cambioPassword;
 
-import com.Hotel_booking.WebApp.registro.token.ConfirmationTokenRepository;
+import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
 import com.Hotel_booking.WebApp.usuario.Usuario;
 import com.Hotel_booking.WebApp.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,12 +16,9 @@ import java.util.UUID;
 @Transactional
 public class CambioService
 {
-    private static final long EXPIRE_TOKEN_AFTER_MINUTES = 30;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-    @Autowired
-    private ConfirmationTokenRepository confirmationTokenRepository;
 
     public String forgotPassword(String email)
     {
@@ -33,39 +31,40 @@ public class CambioService
         }
 
         Usuario usuario = userOptional.get();
-        usuario.setToken(generateToken());
+        usuario.setTokenPassword(generateToken());
         usuario.setFechaCambioContrasena(LocalDate.now());
 
         usuario = usuarioRepository.save(usuario);
 
-        return usuario.getToken();
+        return usuario.getTokenPassword();
     }
 
     private String generateToken()
     {
-        StringBuilder token = new StringBuilder();
-        return token.append(UUID.randomUUID().toString())
-                .append(UUID.randomUUID().toString()).toString();
+        String token = UUID.randomUUID().toString();
+
+        return token;
     }
 
-    public String resetPassword(String token, String password)
-    {
+    public String resetPassword(String tokenPassword, String password) {
         Optional<Usuario> userOptional = Optional
-                .ofNullable(usuarioRepository.findyByToken(token));
+                .ofNullable(usuarioRepository.findUsuarioByToken(tokenPassword));
 
         if (!userOptional.isPresent())
         {
             return "Token inválido";
         }
 
-        LocalDate tokenCreationDate = userOptional.get().getFechaCambioContrasena();
-
-        if (isTokenExpired(tokenCreationDate))
-        {
-            return "El tiempo para actualizar el password ha expirado";
-        }
 
         Usuario user = userOptional.get();
+
+        user.setContrasena(password);
+
+        if (user.getPassword().length() < 6)
+        {
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La contraseña debe ser de al menos 6 caracteres");
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
 
@@ -78,30 +77,5 @@ public class CambioService
 
         return "Se ha actualizado su contraseña";
     }
-
-    private boolean isTokenExpired(final LocalDate tokenCreationDate)
-    {
-        LocalDate now = LocalDate.now();
-        Duration diff = Duration.between(tokenCreationDate, now);
-
-        return diff.toMinutes() >= EXPIRE_TOKEN_AFTER_MINUTES;
-    }
-    
-    //Para la parte que se podría utilizar junto con el front-end
-    public Usuario getByResetPassword(String token)
-    {
-        return usuarioRepository.findUsuarioByToken(token);
-    }
-
-    public void updatePassword(Usuario usuario, String newPassword)
-    {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        usuario.setContrasena(encodedPassword);
-
-        usuario.setTokenPassword(null);
-        usuarioRepository.save(usuario);
-    }
-
 
 }
