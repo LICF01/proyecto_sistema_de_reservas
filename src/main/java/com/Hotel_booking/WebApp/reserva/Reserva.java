@@ -2,6 +2,7 @@ package com.Hotel_booking.WebApp.reserva;
 
 import com.Hotel_booking.WebApp.Habitacion.Habitacion;
 import com.Hotel_booking.WebApp.cliente.Cliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
 @Data
@@ -27,9 +27,10 @@ public class Reserva {
     @Column(name = "Reserva_ID")
     private long codReserva;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "cliente_id")
-//    private Cliente cliente;
+    @ManyToOne()
+    @JsonBackReference
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
     @OneToOne
     @JoinColumn(name = "Habitacion_ID", referencedColumnName = "Habitacion_ID")
@@ -52,33 +53,27 @@ public class Reserva {
     @Column(name = "Cantidad_Ninhos")
     private int cantidadNinhos;
 
-//    @Column(name = "Fecha_Reserva")
-//    @Temporal(TemporalType.DATE)
-//    @JsonFormat(pattern="dd/MM/yyyy")
-//    private LocalDate fechaReserva;
+    @Column(name = "Fecha_Reserva")
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private LocalDate fechaReserva;
 
-    @Positive
     @Column(name = "Precio_Total")
     private Integer precioTotal;
 
-//    public Reserva(Cliente cliente, Habitacion habitacion, Date fechaIngreso, Date fechaSalida, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
-//        this.cliente = cliente;
-//        this.habitacion = habitacion;
-//        this.fechaIngreso = fechaIngreso;
-//        this.fechaSalida = fechaSalida;
-//        this.cantidadAdultos = cantidadAdultos;
-//        this.cantidadNinhos = cantidadNinhos;
-//        this.precioTotal = precioTotal;
-//    }
+    @Column(name = "PagoSiNo")
+    @NotNull(message = "Debes seleccionar si se realizo el pago")
+    private Boolean pagoSiNo;
 
-
-    public Reserva(Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos, Integer precioTotal) {
+    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos, Boolean pagoSiNo) {
+        this.cliente = cliente;
         this.habitacion = habitacion;
         this.fechaIngreso = fechaIngreso;
         this.fechaSalida = fechaSalida;
         this.cantidadAdultos = cantidadAdultos;
         this.cantidadNinhos = cantidadNinhos;
-        this.precioTotal = precioTotal;
+        this.pagoSiNo = pagoSiNo;
+        this.precioTotal = 0;
+        this.fechaReserva = LocalDate.now();
     }
 }
 

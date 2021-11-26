@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ReservaRepository extends JpaRepository <Reserva,Long>{
 
-    @Query(value = "select * from reserva where habitacion_id = ?1 and ?2 between fecha_ingreso and fecha_salida and ?3 between fecha_ingreso and fecha_salida", nativeQuery = true)
+    @Query(value = "SELECT * FROM reserva WHERE habitacion_id = ?1 AND ?2 BETWEEN fecha_ingreso AND fecha_salida OR ?3 BETWEEN fecha_ingreso AND fecha_salida FETCH FIRST ROW ONLY", nativeQuery = true)
     Optional<Reserva> findByHabitacionReserva(long codHabitacion, LocalDate fechaIngreso, LocalDate fechaSalida);
 
 }
