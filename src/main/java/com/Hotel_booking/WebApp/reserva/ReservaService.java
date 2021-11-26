@@ -44,7 +44,7 @@ public class ReservaService {
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede agregar una reserva de una fecha pasada");
 
         //Buscar disponibilidad de Habitacion en fechas solicitadas y verificar que cantidad de personas coincidan con cantidad de camas disponibles en la habitacion
-        Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(res.getHabitacion().getCodHabitacion(), res.getFechaIngreso().plusDays(1), res.getFechaSalida());
+        Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(res.getHabitacion().getCodHabitacion(), res.getFechaIngreso(), res.getFechaSalida());
            if(disponible.isPresent()) {
                throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La habitacion no se encuentra disponible en la fecha solicitada");
                 }
@@ -68,6 +68,9 @@ public class ReservaService {
         //Buscar nro de reserva
         Reserva res = reservaRepository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
 
+        //Asegurar que no se modifica el codigo de cliente
+        resNewInfo.setCliente(res.getCliente());
+
         //Comprobar que no sea posible modificar una reserva con fecha de fin pasada
         if(!verificarFechaFinModificacion(res))
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede modificar una reserva de fecha pasada");
@@ -81,7 +84,7 @@ public class ReservaService {
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede agregar una fecha pasada como fecha de entrada");
 
         //Buscar disponibilidad de Habitacion en fechas solicitadas y verificar que cantidad de personas coincidan con cantidad de camas disponibles en la habitacion
-        Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(res.getHabitacion().getCodHabitacion(), res.getFechaIngreso(), res.getFechaSalida().minusDays(1));
+        Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(res.getHabitacion().getCodHabitacion(), res.getFechaIngreso(), res.getFechaSalida());
         if(disponible.isPresent()) {
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La habitacion no se encuentra disponible en la fecha solicitada");
         }
