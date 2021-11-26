@@ -1,11 +1,8 @@
 package com.Hotel_booking.WebApp.usuario.cambioPassword;
 
-import com.Hotel_booking.WebApp.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -14,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-    @RequestMapping(path = "api/forgot-password")
+@RequestMapping(path = "api/forgot-password")
 public class CambioController
 {
     @Autowired
@@ -24,14 +21,19 @@ public class CambioController
     private CambioService cambioService;
 
     @PostMapping()
-    public String forgotPassword(@RequestParam String email, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+    public String forgotPassword(@RequestParam String email, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException
+    {
         String response = cambioService.forgotPassword(email);
 
-        if (!response.startsWith("Invalid"))
+        if (!response.startsWith("Email invalido"))
         {
             response = Utility.getSiteURL(request) + "/api/forgot-password/reset-password?tokenPassword=" + response;
 
             sendEmail(email, response);
+        }
+        else
+        {
+            response = response + "\nEl email no pertenece a un usuario";
         }
 
         return response;
@@ -64,47 +66,5 @@ public class CambioController
 
         mailSender.send(mensaje);
     }
-    
-    
-    /*Verifica el token en la URL, para asegurar que solo el usuario que recibio el correo pueda cambiar la contraseña, 
-    y en caso de que no encuentre mostrara el mensaje de "Invalid token"*/
- /*   @GetMapping("/reset-password")
-    public String showResetPasswordForm(@Param(value = "token") String token, Model model)
-    {
-        Usuario usuario = cambioService.getByResetPassword(token);
-        model.addAttribute("token", token);
 
-        if (usuario == null) {
-            model.addAttribute("message", "Invalid Token");
-            return "message";
-        }
-
-        return "reset_password_form";
-    }
-    */
-    
-    /*El token verifica para asegurarse que la solicitud sea legítimo, actualiza la nueva contraseña del usuario y muestra un mensaje */
-  /*  @PostMapping("/reset-password")
-    public String processResetPassword(HttpServletRequest request, Model model)
-    {
-        String token = request.getParameter("token");
-        String password = request.getParameter("password");
-        model.addAttribute("title", "Reset your password");
-
-        Usuario usuario = cambioService.getByResetPassword(token);
-
-        if (usuario == null) {
-            model.addAttribute("message", "Invalid Token");
-            return "message";
-        } else
-        {
-            cambioService.updatePassword(usuario, password);
-
-            model.addAttribute("message", "You have successfully changed your password.");
-        }
-
-        return "message";
-
-    }
-    */
 }
