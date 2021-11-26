@@ -66,8 +66,12 @@ public class CambioService
         }
 
         Usuario user = userOptional.get();
-        user.setContrasena(password);
-        user.setToken(null);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password);
+
+        user.setContrasena(encodedPassword);
+
+        user.setTokenPassword(null);
         user.setFechaCambioContrasena(null);
 
         usuarioRepository.save(user);
