@@ -86,5 +86,22 @@ public class CambioService
 
         return diff.toMinutes() >= EXPIRE_TOKEN_AFTER_MINUTES;
     }
+    
+    //Para la parte que se podría utilizar junto con el front-end
+    public Usuario getByResetPassword(String token)
+    {
+        return usuarioRepository.findUsuarioByToken(token);
+    }
+
+    public void updatePassword(Usuario usuario, String newPassword)
+    {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        usuario.setContrasena(encodedPassword);
+
+        usuario.setTokenPassword(null);
+        usuarioRepository.save(usuario);
+    }
+
 
 }
