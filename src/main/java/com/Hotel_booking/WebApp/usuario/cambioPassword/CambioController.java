@@ -1,8 +1,11 @@
 package com.Hotel_booking.WebApp.usuario.cambioPassword;
 
+import com.Hotel_booking.WebApp.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -11,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-@RequestMapping(path = "api/forgot-password")
+    @RequestMapping(path = "api/forgot-password")
 public class CambioController
 {
     @Autowired
@@ -26,7 +29,7 @@ public class CambioController
 
         if (!response.startsWith("Invalid"))
         {
-            response = Utility.getSiteURL(request) + "/api/forgot-password/reset-password?token=" + response;
+            response = Utility.getSiteURL(request) + "/api/forgot-password/reset-password?tokenPassword=" + response;
 
             sendEmail(email, response);
         }
@@ -35,9 +38,9 @@ public class CambioController
     }
 
     @PutMapping("/reset-password")
-    public String resetPassword(@RequestParam String token, @RequestParam String password)
+    public String resetPassword(@RequestParam String tokenPassword, @RequestParam String password)
     {
-        return cambioService.resetPassword(token,password);
+        return cambioService.resetPassword(tokenPassword,password);
     }
 
     public void sendEmail(String email, String enlace) throws MessagingException, UnsupportedEncodingException
@@ -65,7 +68,7 @@ public class CambioController
     
     /*Verifica el token en la URL, para asegurar que solo el usuario que recibio el correo pueda cambiar la contraseña, 
     y en caso de que no encuentre mostrara el mensaje de "Invalid token"*/
-    @GetMapping("/reset-password")
+ /*   @GetMapping("/reset-password")
     public String showResetPasswordForm(@Param(value = "token") String token, Model model)
     {
         Usuario usuario = cambioService.getByResetPassword(token);
@@ -78,10 +81,10 @@ public class CambioController
 
         return "reset_password_form";
     }
-    
+    */
     
     /*El token verifica para asegurarse que la solicitud sea legítimo, actualiza la nueva contraseña del usuario y muestra un mensaje */
-    @PostMapping("/reset-password")
+  /*  @PostMapping("/reset-password")
     public String processResetPassword(HttpServletRequest request, Model model)
     {
         String token = request.getParameter("token");
@@ -103,5 +106,5 @@ public class CambioController
         return "message";
 
     }
-
+    */
 }
