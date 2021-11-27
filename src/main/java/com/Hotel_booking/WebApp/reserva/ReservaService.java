@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ReservaService {
 
     private final ReservaRepository reservaRepository;
-    private final HabitacionService habitacionService;
+    private final HabitacionService   habitacionService;
 
     @Autowired
     public ReservaService(ReservaRepository reservaRepository, HabitacionService habitacionService) {
@@ -68,9 +68,6 @@ public class ReservaService {
         //Buscar nro de reserva
         Reserva res = reservaRepository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
 
-        //Asegurar que no se modifica el codigo de cliente
-        resNewInfo.setCliente(res.getCliente());
-
         //Comprobar que no sea posible modificar una reserva con fecha de fin pasada
         if(!verificarFechaFinModificacion(res))
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede modificar una reserva de fecha pasada");
@@ -84,12 +81,22 @@ public class ReservaService {
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede agregar una fecha pasada como fecha de entrada");
 
         //Buscar disponibilidad de Habitacion en fechas solicitadas y verificar que cantidad de personas coincidan con cantidad de camas disponibles en la habitacion
-        Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(res.getHabitacion().getCodHabitacion(), res.getFechaIngreso(), res.getFechaSalida());
+        Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(resNewInfo.getHabitacion().getCodHabitacion(), resNewInfo.getFechaIngreso(), resNewInfo.getFechaSalida());
         if(disponible.isPresent()) {
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La habitacion no se encuentra disponible en la fecha solicitada");
         }
         else {
             if(verificarCantidadPersonasHabitacion(resNewInfo)) {
+
+
+                res.setHabitacion(resNewInfo.getHabitacion());
+                res.setFechaIngreso(resNewInfo.getFechaIngreso());
+                res.setFechaSalida(resNewInfo.getFechaSalida());
+                res.setCantidadAdultos(resNewInfo.getCantidadAdultos());
+                res.setCantidadNinhos(resNewInfo.getCantidadNinhos());
+                res.setPrecioTotal(calcularMontoReserva(resNewInfo));
+                res.setPagoSiNo(resNewInfo.getPagoSiNo());
+
                 reservaRepository.save(resNewInfo);
                 throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente modificada");
             }
