@@ -76,7 +76,7 @@ public class ReservaService {
         Reserva res = reservaRepository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
 
         //Comprobar que no sea posible modificar una reserva con fecha de fin pasada
-        if(!verificarFechaFinModificacion(resNewInfo))
+        if(!verificarFechaFinModificacion(res))
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede modificar una reserva de fecha pasada");
 
         //Comprobar que fecha de ingreso sea menor a la fecha de salida

@@ -41,8 +41,8 @@ public class ReservaConfig {
             Reserva reserva3 = new Reserva(
                     clienteService.get(3L),
                     habitacionService.getHabitacionbyID(2L),
-                    LocalDate.parse("2021-12-03"),
-                    LocalDate.parse("2021-12-10"),
+                    LocalDate.parse("2021-11-03"),
+                    LocalDate.parse("2021-11-10"),
                     5,
                     0,
                     850000,
