@@ -1,7 +1,8 @@
 package com.Hotel_booking.WebApp.Habitacion;
 
-import com.Hotel_booking.WebApp.cliente.Cliente;
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
+import com.Hotel_booking.WebApp.reserva.Reserva;
+import com.Hotel_booking.WebApp.reserva.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,12 @@ import java.util.List;
 public class HabitacionService {
 
     private final HabitacionRepository habitacionRepository;
+    private final ReservaRepository reservaRepository;
 
     @Autowired
-    public HabitacionService(HabitacionRepository habitacionRepository) {
+    public HabitacionService(HabitacionRepository habitacionRepository, ReservaRepository reservaRepository) {
         this.habitacionRepository = habitacionRepository;
+        this.reservaRepository = reservaRepository;
     }
 
     public List<Habitacion> getHabitaciones() {
@@ -118,8 +121,12 @@ public class HabitacionService {
         if(!existe)
             mensaje();
         else {
-            habitacionRepository.deleteById(IDHabitacion);
-            throw new CustomErrorException(HttpStatus.OK, "Habitación correctamente eliminada");
+            List <Reserva> reserva = reservaRepository.findAllReservaHabitacion(IDHabitacion);
+            if (reserva.isEmpty()) {
+                habitacionRepository.deleteById(IDHabitacion);
+                throw new CustomErrorException(HttpStatus.OK, "Habitación correctamente eliminada");
+            }
+            throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar una habitación con reservas");
         }
     }
 
