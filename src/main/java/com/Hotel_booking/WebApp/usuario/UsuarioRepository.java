@@ -12,13 +12,16 @@ import java.util.Optional;
 @Transactional()
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    @Query("SELECT s FROM Usuario s WHERE s.mail = ?1")
-    Optional<Usuario> findUsuarioByEmail(String mail);
+    Optional<Usuario> findByMail(String mail);
 
     @Transactional
     @Modifying
     @Query("UPDATE Usuario a " +
             "SET a.enabled = TRUE WHERE a.mail = ?1")
     int enableUsuario(String email);
+
+
+    @Query("SELECT t FROM Usuario t WHERE t.token = ?1")
+    Optional<Usuario> findUsuarioByToken(String tokenPassword);
 
 }
