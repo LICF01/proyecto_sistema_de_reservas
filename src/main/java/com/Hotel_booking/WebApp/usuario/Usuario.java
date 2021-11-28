@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class Usuario extends Persona implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", updatable = false)
+    @Column(name = "usuarioID", updatable = false)
     private Long id;
 
     @NotNull
@@ -49,7 +50,10 @@ public class Usuario extends Persona implements UserDetails {
     private Boolean enabled = false;
 
     private String token;
-    
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime tokenCreationDate;
+
     public Usuario(String nombre,
                    String apellido,
                    String mail,
@@ -58,7 +62,8 @@ public class Usuario extends Persona implements UserDetails {
                    String tipoDocumento,
                    String nroDocumento,
                    String contrasena,
-                   UserRole tipoUsuario) {
+                   UserRole tipoUsuario
+    ) {
         super(nombre, apellido, mail, telefono, fechaNac, tipoDocumento, nroDocumento);
         this.contrasena = contrasena;
         this.tipoUsuario = tipoUsuario;
@@ -99,5 +104,9 @@ public class Usuario extends Persona implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void setTokenCreationDate(LocalDateTime now) {
+        this.tokenCreationDate = now;
     }
 }
