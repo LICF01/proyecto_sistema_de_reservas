@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/reserva")
@@ -18,8 +19,13 @@ public class ReservaController {
     }
 
     @GetMapping
-    public List<Reserva> getReserva() {
-        return reservaService.getReserva();
+    public List<Reserva> getTodasReservas() {
+        return reservaService.getTodasReservas();
+    }
+
+    @GetMapping(path = "/habitacion/{codHabitacion}")
+    public List<Reserva> getReservaHabitacion(@PathVariable( value = "codHabitacion") Long ID) {
+        return reservaService.getReservaHabitacion(ID);
     }
 
     @PostMapping

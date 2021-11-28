@@ -23,9 +23,14 @@ public class ReservaService {
         this.habitacionService = habitacionService;
     }
 
-    public List<Reserva> getReserva() {
+    public List<Reserva> getTodasReservas() {
         return reservaRepository.findAll();
     }
+
+    public List<Reserva> getReservaHabitacion(Long IDHab) {
+        return reservaRepository.findAllReservaHabitacion(IDHab);
+    }
+
 
     public String agregarNuevaReserva(Reserva res) {
 
@@ -69,7 +74,7 @@ public class ReservaService {
         Reserva res = reservaRepository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
 
         //Comprobar que no sea posible modificar una reserva con fecha de fin pasada
-        if(!verificarFechaFinModificacion(res))
+        if(!verificarFechaFinModificacion(resNewInfo))
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede modificar una reserva de fecha pasada");
 
         //Comprobar que fecha de ingreso sea menor a la fecha de salida
@@ -88,7 +93,7 @@ public class ReservaService {
         else {
             if(verificarCantidadPersonasHabitacion(resNewInfo)) {
 
-
+                res.setCliente(res.getCliente());
                 res.setHabitacion(resNewInfo.getHabitacion());
                 res.setFechaIngreso(resNewInfo.getFechaIngreso());
                 res.setFechaSalida(resNewInfo.getFechaSalida());
@@ -97,7 +102,7 @@ public class ReservaService {
                 res.setPrecioTotal(calcularMontoReserva(resNewInfo));
                 res.setPagoSiNo(resNewInfo.getPagoSiNo());
 
-                reservaRepository.save(resNewInfo);
+                reservaRepository.save(res);
                 throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente modificada");
             }
             else {

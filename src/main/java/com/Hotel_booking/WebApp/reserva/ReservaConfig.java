@@ -19,23 +19,37 @@ public class ReservaConfig {
         return args -> {
             Reserva reserva1 = new Reserva(
                     clienteService.get(3L),
-                    habitacionService.getHabitacionbyID(1L),
-                    LocalDate.parse("2021-11-20"),
-                    LocalDate.parse("2021-11-28"),
+                    habitacionService.getHabitacionbyID(2L),
+                    LocalDate.parse("2021-11-29"),
+                    LocalDate.parse("2021-11-30"),
                     2,
                     0,
+                    350000,
                     true
             );
             Reserva reserva2 = new Reserva(
                     clienteService.get(3L),
-                    habitacionService.getHabitacionbyID(1L),
-                    LocalDate.parse("2021-11-17"),
-                    LocalDate.parse("2021-11-19"),
-                    3,
-                    1,
+                    habitacionService.getHabitacionbyID(2L),
+                    LocalDate.parse("2021-12-20"),
+                    LocalDate.parse("2021-12-25"),
+                    2,
+                    2,
+                    550000,
                     true
             );
-            reservaRepository.saveAll(Arrays.asList(reserva1, reserva2));
+
+            Reserva reserva3 = new Reserva(
+                    clienteService.get(3L),
+                    habitacionService.getHabitacionbyID(2L),
+                    LocalDate.parse("2021-12-03"),
+                    LocalDate.parse("2021-12-10"),
+                    5,
+                    0,
+                    850000,
+                    false
+            );
+
+            reservaRepository.saveAll(Arrays.asList(reserva1, reserva2, reserva3));
 
         };
     }

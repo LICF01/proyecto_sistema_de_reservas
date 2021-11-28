@@ -33,6 +33,7 @@ public class Reserva {
     private Cliente cliente;
 
     @OneToOne
+    @NotNull(message = "Debe ingresar un nro de habitacion")
     @JoinColumn(name = "Habitacion_ID", referencedColumnName = "Habitacion_ID")
     private Habitacion habitacion;
 
@@ -64,7 +65,7 @@ public class Reserva {
     @NotNull(message = "Debes seleccionar si se realizo el pago")
     private Boolean pagoSiNo;
 
-    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos, Boolean pagoSiNo) {
+    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos, int precioTotal, Boolean pagoSiNo) {
         this.cliente = cliente;
         this.habitacion = habitacion;
         this.fechaIngreso = fechaIngreso;
@@ -72,7 +73,7 @@ public class Reserva {
         this.cantidadAdultos = cantidadAdultos;
         this.cantidadNinhos = cantidadNinhos;
         this.pagoSiNo = pagoSiNo;
-        this.precioTotal = 0;
+        this.precioTotal = precioTotal;
         this.fechaReserva = LocalDate.now();
     }
 }
