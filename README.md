@@ -31,7 +31,7 @@ En este README, se encuentra disponible parte de la documentación, se puede ver
 
 Se debe crear la base de datos que se va a utilizar manualmente en PostgresSQL, preferentemente llamar a la base de datos "hotel_booking" para mayor fluidez en su ejecución. ***Se debe de cambiar también la contraseña que se encuentra definida en properties, siendo su acceso:*** `/src/main/resources/static/application.properties`
 
-Ejecute la clase principal `Application` siguiendo esta [guía de la documentación oficial de Spring Boot](https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/using-boot-running-your-application.html)
+Puede utilizarla demo que esta hosteada en Heroku [aquí](https://spring-boot-sistema-booking.herokuapp.com) o clonar localmente el repositorio y ejecutar la clase principal `Application` siguiendo esta [guía de la documentación oficial de Spring Boot](https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/using-boot-running-your-application.html)
 
 El servicio utiliza el envío de tokens por mail para la confirmación del registro, por favor vea la sección *"Configuración del servicio de Email"*
 
