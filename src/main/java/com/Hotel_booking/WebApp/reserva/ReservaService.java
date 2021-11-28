@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Service
 public class ReservaService {
 
@@ -149,6 +151,10 @@ public class ReservaService {
 
         if (montoTotal < habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getPrecioMinimo())
             montoTotal = habitacionService.getHabitacionbyID(res.getHabitacion().getCodHabitacion()).getPrecioMinimo();
+
+        long cantidadDias = DAYS.between(res.getFechaIngreso(), res.getFechaSalida());
+
+        montoTotal = montoTotal * (int) cantidadDias;
 
         return montoTotal;
     }
