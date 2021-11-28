@@ -1,9 +1,12 @@
 package com.Hotel_booking.WebApp.Habitacion;
 
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
+import com.Hotel_booking.WebApp.reserva.Reserva;
+import com.Hotel_booking.WebApp.reserva.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -12,14 +15,21 @@ import java.util.List;
 public class HabitacionService {
 
     private final HabitacionRepository habitacionRepository;
+    private final ReservaRepository reservaRepository;
 
     @Autowired
-    public HabitacionService(HabitacionRepository habitacionRepository) {
+    public HabitacionService(HabitacionRepository habitacionRepository, ReservaRepository reservaRepository) {
         this.habitacionRepository = habitacionRepository;
+        this.reservaRepository = reservaRepository;
     }
 
     public List<Habitacion> getHabitaciones() {
         return habitacionRepository.findAll();
+    }
+
+    public Habitacion getHabitacionbyID(Long HabitacionID) {
+        return habitacionRepository.findById(HabitacionID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public String agregarNuevaHabitacion(Habitacion hab) {
@@ -104,6 +114,20 @@ public class HabitacionService {
         }
 
         return false;
+    }
+
+    public void eliminarHabitacion(Long IDHabitacion) {
+        boolean existe = habitacionRepository.existsById(IDHabitacion);
+        if(!existe)
+            mensaje();
+        else {
+            List <Reserva> reserva = reservaRepository.findAllReservaHabitacion(IDHabitacion);
+            if (reserva.isEmpty()) {
+                habitacionRepository.deleteById(IDHabitacion);
+                throw new CustomErrorException(HttpStatus.OK, "Habitación correctamente eliminada");
+            }
+            throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar una habitación con reservas");
+        }
     }
 
     private String mensaje() {

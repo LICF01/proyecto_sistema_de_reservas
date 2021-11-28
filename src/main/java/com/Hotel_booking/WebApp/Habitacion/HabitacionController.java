@@ -35,6 +35,12 @@ public class HabitacionController {
         return habitacionService.modificarHabitacion(ID, hab);
     }
 
+    @DeleteMapping(path = "{codHabitacion}")
+    public void eliminarHabitacion(@PathVariable( value = "codHabitacion") Long ID) {
+
+        habitacionService.eliminarHabitacion(ID);
+    }
+
 
 }
 

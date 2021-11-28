@@ -2,6 +2,9 @@ package com.Hotel_booking.WebApp.cliente;
 
 import com.Hotel_booking.WebApp.Genero;
 import com.Hotel_booking.WebApp.persona.Persona;
+import com.Hotel_booking.WebApp.reserva.Reserva;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +13,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -42,6 +46,10 @@ public class Cliente extends Persona {
 
     @Column(name = "nro_ruc", columnDefinition = "TEXT")
     private String nroRuc;
+
+    @OneToMany(mappedBy = "cliente")
+    @JsonManagedReference
+    private Set<Reserva> reservas;
 
 
 
