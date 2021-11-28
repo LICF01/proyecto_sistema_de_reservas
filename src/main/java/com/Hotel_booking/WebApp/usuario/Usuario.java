@@ -1,33 +1,31 @@
 package com.Hotel_booking.WebApp.usuario;
 
 import com.Hotel_booking.WebApp.persona.Persona;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString
 @Entity
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "usuario")
 @PrimaryKeyJoinColumn(name = "id")
 public class Usuario extends Persona implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", updatable = false)
+    @Column(name = "usuarioID", updatable = false)
     private Long id;
 
     @NotNull
@@ -49,8 +47,12 @@ public class Usuario extends Persona implements UserDetails {
     private UserRole tipoUsuario;
 
     private Boolean locked = false;
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
+    private String token;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime tokenCreationDate;
 
     public Usuario(String nombre,
                    String apellido,
@@ -60,7 +62,8 @@ public class Usuario extends Persona implements UserDetails {
                    String tipoDocumento,
                    String nroDocumento,
                    String contrasena,
-                   UserRole tipoUsuario) {
+                   UserRole tipoUsuario
+    ) {
         super(nombre, apellido, mail, telefono, fechaNac, tipoDocumento, nroDocumento);
         this.contrasena = contrasena;
         this.tipoUsuario = tipoUsuario;
@@ -101,5 +104,9 @@ public class Usuario extends Persona implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void setTokenCreationDate(LocalDateTime now) {
+        this.tokenCreationDate = now;
     }
 }

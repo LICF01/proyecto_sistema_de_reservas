@@ -22,20 +22,20 @@ public class UsuarioConfig {
     @Bean
     CommandLineRunner usuarioConfigRunner(UsuarioRepository usuarioRepository) {
         return args -> {
-        Usuario lucas = new Usuario(
-                "Lucas",
-                "Cubilla",
-                "usuario1@gmail.com",
-                "09213412",
-                new SimpleDateFormat("dd/MM/yyyy").parse("19/01/1994"),
-                "CI",
-                "1234523",
-                bCryptPasswordEncoder.encode("user1"),
+            Usuario lucas = new Usuario(
+                    "Lucas",
+                    "Cubilla",
+                    "usuario1@gmail.com",
+                    "09213412",
+                    new SimpleDateFormat("dd/MM/yyyy").parse("19/01/1994"),
+                    "CI",
+                    "1234523",
+                    bCryptPasswordEncoder.encode("user1"),
 //                LocalDate.now(),
 //                LocalDate.now(),
 //                LocalDate.now(),
-                UserRole.ADMIN
-        );
+                    UserRole.ADMIN
+            );
             Usuario ivan = new Usuario(
                     "Ivan",
                     "Cubilla",
@@ -51,11 +51,12 @@ public class UsuarioConfig {
                     UserRole.USER
             );
 
-        usuarioRepository.saveAll(
-                List.of(lucas, ivan)
-        );
+            lucas.setEnabled(true);
+            ivan.setEnabled(true);
 
+            usuarioRepository.saveAll(
+                    List.of(lucas, ivan)
+            );
         };
     }
-
 }
