@@ -1,10 +1,12 @@
 package com.Hotel_booking.WebApp.Habitacion;
 
+import com.Hotel_booking.WebApp.Utility.ResponseHandler;
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
 import com.Hotel_booking.WebApp.reserva.Reserva;
 import com.Hotel_booking.WebApp.reserva.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,19 +34,20 @@ public class HabitacionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public String agregarNuevaHabitacion(Habitacion hab) {
+    public ResponseEntity<Object> agregarNuevaHabitacion(Habitacion hab) {
 
     if(validarTipoHabitacion(hab.getTipoHabitacion(), hab.getCantidadPersonas())) {
         habitacionRepository.save(hab);
-        throw new CustomErrorException(HttpStatus.OK, "Habitación correctamente ingresada");
+
+        return ResponseHandler.generateResponse( "Habitación correctamente ingresada", HttpStatus.CREATED, hab);
     }
     else
         throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Datos ingresados incorrectos");
     }
 
     @Transactional
-    public String modificarHabitacion(Long ID,
-                                    Habitacion habNewInfo) {
+    public ResponseEntity<Object> modificarHabitacion(Long ID,
+                                                      Habitacion habNewInfo) {
 
         Habitacion hab = habitacionRepository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
 
@@ -85,7 +88,7 @@ public class HabitacionService {
         hab.setPrecioMinimo(habNewInfo.getPrecioMinimo());
         habitacionRepository.save(hab);
 
-        throw new CustomErrorException(HttpStatus.OK, "Habitación correctamente modificada");
+        return ResponseHandler.generateResponse( "Habitación correctamente modificada", HttpStatus.OK, hab);
 
     }
 

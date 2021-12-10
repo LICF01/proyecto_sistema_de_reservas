@@ -2,6 +2,7 @@ package com.Hotel_booking.WebApp.Habitacion;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +24,12 @@ public class HabitacionController {
     }
 
     @PostMapping
-    public String registrarNuevaHabitacion(@Valid @RequestBody Habitacion hab) {
+    public ResponseEntity<Object> registrarNuevaHabitacion(@Valid @RequestBody Habitacion hab) {
         return habitacionService.agregarNuevaHabitacion(hab);
     }
 
     @PutMapping (path = "{codHabitacion}")
-    public String modificarHabitacion(
+    public ResponseEntity<Object> modificarHabitacion(
             @PathVariable( value = "codHabitacion") Long ID,
             @RequestBody Habitacion hab) {
 
