@@ -24,8 +24,7 @@ public class ReservaConfig {
                     LocalDate.parse("2021-11-30"),
                     2,
                     0,
-                    350000,
-                    true
+                    350000
             );
             Reserva reserva2 = new Reserva(
                     clienteService.get(3L),
@@ -34,8 +33,7 @@ public class ReservaConfig {
                     LocalDate.parse("2021-12-25"),
                     2,
                     2,
-                    550000,
-                    true
+                    550000
             );
 
             Reserva reserva3 = new Reserva(
@@ -45,8 +43,7 @@ public class ReservaConfig {
                     LocalDate.parse("2021-11-10"),
                     5,
                     0,
-                    850000,
-                    false
+                    850000
             );
 
             reservaRepository.saveAll(Arrays.asList(reserva1, reserva2, reserva3));

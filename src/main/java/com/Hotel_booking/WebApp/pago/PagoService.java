@@ -82,7 +82,7 @@ public class PagoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         //Traer lista de pagos anteriores
-        List <Pago> pagos = pagoRespository.findAllByReservaID(pag.getReserva().getCodReserva());
+        List <Pago> pagos = pagoRespository.findAllByReservaIDActivos(pag.getReserva().getCodReserva());
 
         //Iterar sobre la lista de pagos para acumular en monto total de pagos anteriores
         for (Pago pago : pagos) {
@@ -97,6 +97,7 @@ public class PagoService {
             }
 
     }
+
 
     private String mensaje() {
         throw new CustomErrorException(HttpStatus.NOT_FOUND, "Número de pago inexistente");
