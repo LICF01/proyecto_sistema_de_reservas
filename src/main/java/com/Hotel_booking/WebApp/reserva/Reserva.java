@@ -78,5 +78,13 @@ public class Reserva {
         this.precioTotal = precioTotal;
         this.fechaReserva = LocalDate.now();
     }
+
+    public Reserva(Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos) {
+        this.habitacion = habitacion;
+        this.fechaIngreso = fechaIngreso;
+        this.fechaSalida = fechaSalida;
+        this.cantidadAdultos = cantidadAdultos;
+        this.cantidadNinhos = cantidadNinhos;
+    }
 }
 
