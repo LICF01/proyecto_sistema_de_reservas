@@ -1,11 +1,11 @@
 package com.Hotel_booking.WebApp.reserva;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/reserva")
@@ -29,12 +29,12 @@ public class ReservaController {
     }
 
     @PostMapping
-    public String registrarNuevaReserva(@Valid @RequestBody Reserva res) {
+    public ResponseEntity<Object> registrarNuevaReserva(@Valid @RequestBody Reserva res) {
         return reservaService.agregarNuevaReserva(res);
     }
 
     @PutMapping (path = "{codReserva}")
-    public String modificarReserva(
+    public Object modificarReserva(
             @PathVariable( value = "codReserva") Long ID,
             @RequestBody Reserva res) {
 

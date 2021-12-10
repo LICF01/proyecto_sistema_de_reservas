@@ -1,9 +1,11 @@
 package com.Hotel_booking.WebApp.reserva;
 
 import com.Hotel_booking.WebApp.Habitacion.HabitacionService;
+import com.Hotel_booking.WebApp.Utility.ResponseHandler;
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -34,7 +36,7 @@ public class ReservaService {
     }
 
 
-    public String agregarNuevaReserva(Reserva res) {
+    public ResponseEntity<Object> agregarNuevaReserva(Reserva res) {
 
         //Calcular precio total de acuerdo al precio de la habitacion y a la cantidad de adultos y niños
         res.setPrecioTotal(calcularMontoReserva(res));
@@ -59,7 +61,8 @@ public class ReservaService {
                 if(verificarCantidadPersonasHabitacion(res)) {
 
                     reservaRepository.save(res);
-                    throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente agregada");
+
+                    return ResponseHandler.generateResponse("Reserva correctamente agregada", HttpStatus.CREATED, res );
                 }
                 else {
                     throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La habitacion no tiene disponibilidad para esa cantidad de personas");
@@ -70,7 +73,7 @@ public class ReservaService {
     }
 
     @Transactional
-    public String modificarReserva(Long ID, Reserva resNewInfo) {
+    public Object modificarReserva(Long ID, Reserva resNewInfo) {
 
         //Buscar nro de reserva
         Reserva res = reservaRepository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
@@ -105,7 +108,7 @@ public class ReservaService {
                 res.setPagoSiNo(resNewInfo.getPagoSiNo());
 
                 reservaRepository.save(res);
-                throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente modificada");
+                return ResponseHandler.generateResponse("Reserva correctamente modificada", HttpStatus.OK, res );
             }
             else {
                 throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La habitacion no tiene disponibilidad para esa cantidad de personas");
