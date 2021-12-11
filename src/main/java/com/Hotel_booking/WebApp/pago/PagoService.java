@@ -42,11 +42,18 @@ public class PagoService {
         //Buscar reserva
         Reserva res = reservaRepository.findByReservaID(pag.getReserva().getCodReserva())
                 .orElseThrow(() -> new IllegalStateException(mensajeReserva()));
-        if(validarMontoPago(pag, res)){
-            pag.setFechaPago(LocalDate.now());
-            pag.setEstado(EstadoPago.ACTIVO);
-            pagoRespository.save(pag);
-            return ResponseHandler.generateResponse("Pago correctamente ingresado", HttpStatus.CREATED, pag );
+
+        //Validar fecha de salida pasada
+        if(LocalDate.now().isBefore(res.getFechaSalida())) {
+            //Validar monto de pago
+            if(validarMontoPago(pag, res)){
+                pag.setFechaPago(LocalDate.now());
+                pag.setEstado(EstadoPago.ACTIVO);
+                pagoRespository.save(pag);
+                return ResponseHandler.generateResponse("Pago correctamente ingresado", HttpStatus.CREATED, pag );
+            }
+        } else {
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede agregar pagos a una reserva pasada");
         }
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Datos ingresados incorrectos");
     }
@@ -54,15 +61,24 @@ public class PagoService {
     @Transactional
     public Object modificarPago(Long ID, Pago newInfoPago) {
 
-        Pago pag = pagoRespository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
+        Pago pag = pagoRespository.findById(ID).orElseThrow(() -> new IllegalStateException(mensaje()));
+
+        //Buscar reserva
+        Reserva res = reservaRepository.findByReservaID(pag.getReserva().getCodReserva())
+                .orElseThrow(() -> new IllegalStateException(mensajeReserva()));
 
         //Modificar Estado de Pago
-        if(newInfoPago.getEstado().equals(EstadoPago.INACTIVO) || newInfoPago.getEstado().equals(EstadoPago.ACTIVO)) {
+        if (newInfoPago.getEstado().equals(EstadoPago.INACTIVO) || newInfoPago.getEstado().equals(EstadoPago.ACTIVO)) {
+
+            if (LocalDate.now().isBefore(res.getFechaSalida())) {
                 pag.setEstado(newInfoPago.getEstado());
                 pagoRespository.save(pag);
-                return ResponseHandler.generateResponse("Pago correctamente modificado", HttpStatus.OK, pag );
+                return ResponseHandler.generateResponse("Pago correctamente modificado", HttpStatus.OK, pag);
+            } else {
+                throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Error: no se puede modificar el pago de una reserva pasada");
             }
 
+        }
         throw new CustomErrorException(HttpStatus.BAD_REQUEST, "Error: no se puede modificar el pago");
     }
 
@@ -70,12 +86,26 @@ public class PagoService {
 
         //Buscar Nro de Pago
         Pago pag = pagoRespository.findById(IDPago).orElseThrow(() -> new IllegalStateException (mensaje()));
-        //Verificar que el pago este inactivo
-        if(pag.getEstado().equals(EstadoPago.INACTIVO)) {
-            pagoRespository.deleteById(IDPago);
-            throw new CustomErrorException(HttpStatus.OK, "Pago correctamente eliminado");
+
+        //Buscar reserva
+        Reserva res = reservaRepository.findByReservaID(pag.getReserva().getCodReserva())
+                .orElseThrow(() -> new IllegalStateException(mensajeReserva()));
+
+        //Verificar que el pago no sea de una reserva pasada
+        if(LocalDate.now().isBefore(res.getFechaSalida())) {
+            //Verificar que el pago este inactivo
+            if (pag.getEstado().equals(EstadoPago.INACTIVO)) {
+                pagoRespository.deleteById(IDPago);
+                throw new CustomErrorException(HttpStatus.OK, "Pago correctamente eliminado");
+
+            } else {
+                throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar un pago activo");
+            }
+
+        } else {
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar pagos de una reserva pasada");
         }
-        throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar un pago activo");
+
     }
 
     public boolean validarMontoPago(Pago pag, Reserva res) {
