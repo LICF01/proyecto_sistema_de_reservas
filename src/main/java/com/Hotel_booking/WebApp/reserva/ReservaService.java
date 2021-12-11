@@ -102,7 +102,7 @@ public class ReservaService {
         else {
             if(verificarCantidadPersonasHabitacion(resNewInfo)) {
 
-                res.setCliente(res.getCliente());
+                //res.setCliente(res.getCliente());
                 res.setHabitacion(resNewInfo.getHabitacion());
                 res.setFechaIngreso(resNewInfo.getFechaIngreso());
                 res.setFechaSalida(resNewInfo.getFechaSalida());

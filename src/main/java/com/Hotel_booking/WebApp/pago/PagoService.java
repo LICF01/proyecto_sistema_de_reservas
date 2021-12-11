@@ -39,7 +39,10 @@ public class PagoService {
 
     public ResponseEntity<Object> agregarNuevoPago(Pago pag) {
 
-        if(validarMontoPago(pag)){
+        //Buscar reserva
+        Reserva res = reservaRepository.findByReservaID(pag.getReserva().getCodReserva())
+                .orElseThrow(() -> new IllegalStateException(mensajeReserva()));
+        if(validarMontoPago(pag, res)){
             pag.setFechaPago(LocalDate.now());
             pag.setEstado(EstadoPago.ACTIVO);
             pagoRespository.save(pag);
@@ -75,11 +78,9 @@ public class PagoService {
         throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar un pago activo");
     }
 
-    public boolean validarMontoPago(Pago pag) {
+    public boolean validarMontoPago(Pago pag, Reserva res) {
         int pagoTotal = 0;
-        //Buscar reserva
-        Reserva res = reservaRepository.findByReservaID(pag.getReserva().getCodReserva())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
 
         //Traer lista de pagos anteriores
         List <Pago> pagos = pagoRespository.findAllByReservaIDActivos(pag.getReserva().getCodReserva());
@@ -101,5 +102,9 @@ public class PagoService {
 
     private String mensaje() {
         throw new CustomErrorException(HttpStatus.NOT_FOUND, "Número de pago inexistente");
+    }
+
+    private String mensajeReserva() {
+        throw new CustomErrorException(HttpStatus.NOT_FOUND, "Número de reserva inexistente");
     }
 }
