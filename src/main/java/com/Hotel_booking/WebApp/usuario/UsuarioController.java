@@ -44,4 +44,17 @@ public class UsuarioController {
         return usuarioService.resetPassword(tokenPassword, password);
     }
 
+    @PutMapping (path = "{codUsuario}")
+    public Object modificarUsuario(
+            @PathVariable( value = "codUsuario") Long ID,
+            @RequestBody Usuario usu) {
+
+        return usuarioService.modificarUsuario(ID, usu);
+    }
+
+    @DeleteMapping(path = "{codUsuario}")
+    public void eliminarUsuario(@PathVariable( value = "codUsuario") Long ID) {
+        usuarioService.eliminarUsuario(ID);
+    }
+
 }

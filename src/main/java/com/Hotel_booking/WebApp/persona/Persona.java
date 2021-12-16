@@ -65,6 +65,13 @@ public class Persona {
         this.nroDocumento = nroDocumento;
     }
 
+    public Persona(String nombre, String apellido, String telefono, String tipoDocumento, String nroDocumento) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.tipoDocumento = tipoDocumento;
+        this.nroDocumento = nroDocumento;
+    }
 
     @Override
     public String toString() {
