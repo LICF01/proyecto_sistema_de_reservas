@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -46,7 +47,25 @@ public class ReservaConfig {
                     850000
             );
 
-            reservaRepository.saveAll(Arrays.asList(reserva1, reserva2, reserva3));
+            List<Reserva> reservaInicial = reservaRepository.findReservaConfig(reserva1.getFechaIngreso());
+            if (reservaInicial.isEmpty()) {
+                reservaRepository.save(reserva1);
+                reservaInicial.clear();
+            }
+
+            reservaInicial = reservaRepository.findReservaConfig(reserva2.getFechaIngreso());
+            if (reservaInicial.isEmpty()) {
+                reservaRepository.save(reserva2);
+                reservaInicial.clear();
+            }
+
+            reservaInicial = reservaRepository.findReservaConfig(reserva3.getFechaIngreso());
+            if (reservaInicial.isEmpty()) {
+                reservaRepository.save(reserva3);
+                reservaInicial.clear();
+            }
+
+//            reservaRepository.saveAll(Arrays.asList(reserva1, reserva2, reserva3));
 
         };
     }

@@ -1,7 +1,6 @@
 package com.Hotel_booking.WebApp.reserva;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -26,9 +25,8 @@ public interface ReservaRepository extends JpaRepository <Reserva,Long>{
     @Query(value = "SELECT * FROM reserva WHERE Reserva_ID=?1", nativeQuery = true)
     Optional<Reserva> findByReservaID(long codReserva);
 
-//    @Modifying(clearAutomatically = true)
-//    @Query(value = "UPDATE pago_si_no=?2 FROM reserva WHERE Reserva_ID=?1", nativeQuery = true)
-//    int updatePagoSiNo(long codReserva, boolean pagado);
+    @Query("SELECT r FROM Reserva r WHERE r.fechaIngreso = ?1")
+    List<Reserva> findReservaConfig(LocalDate fechaIngreso);
 
 
 }

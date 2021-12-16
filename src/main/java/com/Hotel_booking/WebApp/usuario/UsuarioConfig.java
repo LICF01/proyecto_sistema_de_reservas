@@ -54,9 +54,20 @@ public class UsuarioConfig {
             lucas.setEnabled(true);
             ivan.setEnabled(true);
 
-            usuarioRepository.saveAll(
-                    List.of(lucas, ivan)
-            );
+            List<Usuario> userInicial = usuarioRepository.findUsuarioConfig(lucas.getMail());
+            if (userInicial.isEmpty()) {
+                usuarioRepository.save(lucas);
+                userInicial.clear();
+            }
+
+            userInicial = usuarioRepository.findUsuarioConfig(ivan.getMail());
+            if (userInicial.isEmpty()) {
+                usuarioRepository.save(ivan);
+            }
+
+//            usuarioRepository.saveAll(
+//                    List.of(lucas, ivan)
+//            );
         };
     }
 }
