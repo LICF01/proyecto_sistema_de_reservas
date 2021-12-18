@@ -3,6 +3,8 @@ package com.Hotel_booking.WebApp.reserva;
 import com.Hotel_booking.WebApp.Habitacion.HabitacionService;
 import com.Hotel_booking.WebApp.Utility.ResponseHandler;
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
+import com.Hotel_booking.WebApp.pago.Pago;
+import com.Hotel_booking.WebApp.pago.PagoRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,13 @@ public class ReservaService {
 
     private final ReservaRepository reservaRepository;
     private final HabitacionService   habitacionService;
+    private final PagoRespository pagoRespository;
 
     @Autowired
-    public ReservaService(ReservaRepository reservaRepository, HabitacionService habitacionService) {
+    public ReservaService(ReservaRepository reservaRepository, HabitacionService habitacionService, PagoRespository pagoRespository) {
         this.reservaRepository = reservaRepository;
         this.habitacionService = habitacionService;
+        this.pagoRespository = pagoRespository;
     }
 
     public List<Reserva> getTodasReservas() {
@@ -98,14 +102,14 @@ public class ReservaService {
         else {
             if(verificarCantidadPersonasHabitacion(resNewInfo)) {
 
-                res.setCliente(res.getCliente());
+                //res.setCliente(res.getCliente());
                 res.setHabitacion(resNewInfo.getHabitacion());
                 res.setFechaIngreso(resNewInfo.getFechaIngreso());
                 res.setFechaSalida(resNewInfo.getFechaSalida());
                 res.setCantidadAdultos(resNewInfo.getCantidadAdultos());
                 res.setCantidadNinhos(resNewInfo.getCantidadNinhos());
                 res.setPrecioTotal(calcularMontoReserva(resNewInfo));
-                res.setPagoSiNo(resNewInfo.getPagoSiNo());
+                //res.setPagoSiNo(resNewInfo.getPagoSiNo());
 
                 reservaRepository.save(res);
                 return ResponseHandler.generateResponse("Reserva correctamente modificada", HttpStatus.OK, res );
@@ -125,10 +129,15 @@ public class ReservaService {
 
         //Verificar que no se elimine una reserva de fecha pasada
         if(verificarFechaInicio(res)) {
-            reservaRepository.deleteById(IDReserva);
-            throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente eliminada");
+            List <Pago> pago = pagoRespository.findAllPagosByReservaID(IDReserva);
+            if(pago.isEmpty()) {
+                reservaRepository.deleteById(IDReserva);
+                throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente eliminada");
+            } else {
+                throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar una reserva con pagos");
+            }
         } else {
-            throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar una reserva con fecha de inicio pasada");
+            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar una reserva con fecha de inicio pasada");
         }
     }
 

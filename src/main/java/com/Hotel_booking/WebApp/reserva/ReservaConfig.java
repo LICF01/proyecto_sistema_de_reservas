@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -24,8 +25,7 @@ public class ReservaConfig {
                     LocalDate.parse("2021-11-30"),
                     2,
                     0,
-                    350000,
-                    true
+                    350000
             );
             Reserva reserva2 = new Reserva(
                     clienteService.get(3L),
@@ -34,8 +34,7 @@ public class ReservaConfig {
                     LocalDate.parse("2021-12-25"),
                     2,
                     2,
-                    550000,
-                    true
+                    550000
             );
 
             Reserva reserva3 = new Reserva(
@@ -45,11 +44,28 @@ public class ReservaConfig {
                     LocalDate.parse("2021-11-10"),
                     5,
                     0,
-                    850000,
-                    false
+                    850000
             );
 
-            reservaRepository.saveAll(Arrays.asList(reserva1, reserva2, reserva3));
+            List<Reserva> reservaInicial = reservaRepository.findReservaConfig(reserva1.getFechaIngreso());
+            if (reservaInicial.isEmpty()) {
+                reservaRepository.save(reserva1);
+                reservaInicial.clear();
+            }
+
+            reservaInicial = reservaRepository.findReservaConfig(reserva2.getFechaIngreso());
+            if (reservaInicial.isEmpty()) {
+                reservaRepository.save(reserva2);
+                reservaInicial.clear();
+            }
+
+            reservaInicial = reservaRepository.findReservaConfig(reserva3.getFechaIngreso());
+            if (reservaInicial.isEmpty()) {
+                reservaRepository.save(reserva3);
+                reservaInicial.clear();
+            }
+
+//            reservaRepository.saveAll(Arrays.asList(reserva1, reserva2, reserva3));
 
         };
     }
