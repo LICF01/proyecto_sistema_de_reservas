@@ -69,9 +69,6 @@ public class Usuario extends Persona implements UserDetails {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public Usuario(String nombre, String apellido, String telefono, String tipoDocumento, String nroDocumento) {
-        super(nombre, apellido, telefono, tipoDocumento, nroDocumento);
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

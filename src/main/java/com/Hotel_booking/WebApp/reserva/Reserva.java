@@ -2,10 +2,8 @@ package com.Hotel_booking.WebApp.reserva;
 
 import com.Hotel_booking.WebApp.Habitacion.Habitacion;
 import com.Hotel_booking.WebApp.cliente.Cliente;
-import com.Hotel_booking.WebApp.pago.Pago;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +11,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -64,27 +61,20 @@ public class Reserva {
     @Column(name = "Precio_Total")
     private Integer precioTotal;
 
-    @OneToMany(mappedBy = "reserva")
-    @JsonIgnore
-    private Set<Pago> pagos;
+    @Column(name = "PagoSiNo")
+    @NotNull(message = "Debes seleccionar si se realizo el pago")
+    private Boolean pagoSiNo;
 
-    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos, int precioTotal) {
+    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos, int precioTotal, Boolean pagoSiNo) {
         this.cliente = cliente;
         this.habitacion = habitacion;
         this.fechaIngreso = fechaIngreso;
         this.fechaSalida = fechaSalida;
         this.cantidadAdultos = cantidadAdultos;
         this.cantidadNinhos = cantidadNinhos;
+        this.pagoSiNo = pagoSiNo;
         this.precioTotal = precioTotal;
         this.fechaReserva = LocalDate.now();
-    }
-
-    public Reserva(Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos) {
-        this.habitacion = habitacion;
-        this.fechaIngreso = fechaIngreso;
-        this.fechaSalida = fechaSalida;
-        this.cantidadAdultos = cantidadAdultos;
-        this.cantidadNinhos = cantidadNinhos;
     }
 }
 

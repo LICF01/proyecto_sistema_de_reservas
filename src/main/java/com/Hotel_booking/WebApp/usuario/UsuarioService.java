@@ -1,6 +1,5 @@
 package com.Hotel_booking.WebApp.usuario;
 
-import com.Hotel_booking.WebApp.Utility.ResponseHandler;
 import com.Hotel_booking.WebApp.email.EmailSender;
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
 import com.Hotel_booking.WebApp.registro.token.ConfirmationToken;
@@ -13,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.*;
 import java.util.List;
 import java.util.Optional;
@@ -253,39 +251,5 @@ public class UsuarioService implements UserDetailsService {
                 "\n" +
                 "</div></div>";
     }
-
-    //Modificacion de datos de usuario
-    @Transactional
-    public Object modificarUsuario(Long ID, Usuario usuarioNewInfo) {
-
-        Usuario usu = usuarioRepository.findById(ID).orElseThrow(() -> new IllegalStateException (mensaje()));
-
-        usu.setNombre(usuarioNewInfo.getNombre());
-        usu.setApellido(usuarioNewInfo.getApellido());
-        usu.setTelefono(usuarioNewInfo.getTelefono());
-        usu.setTipoDocumento(usuarioNewInfo.getTipoDocumento());
-        usu.setNroDocumento(usuarioNewInfo.getNroDocumento());
-
-        usuarioRepository.save(usu);
-        return ResponseHandler.generateResponse("Usuario correctamente modificado", HttpStatus.OK, usu );
-
-    }
-
-    //Eliminacion de Usuario
-    public void eliminarUsuario(Long IDUsuario) {
-        boolean existe = usuarioRepository.existsById(IDUsuario);
-        if(!existe) {
-            mensaje();
-        }
-        else {
-            usuarioRepository.deleteById(IDUsuario);
-            throw new CustomErrorException(HttpStatus.OK, "Usuario correctamente eliminado");
-        }
-    }
-
-    private String mensaje() {
-        throw new CustomErrorException(HttpStatus.NOT_FOUND, "Número de usuario inexistente");
-    }
-
 
 }

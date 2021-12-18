@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 public class HabitacionConfig {
@@ -35,18 +34,7 @@ public class HabitacionConfig {
                     500000
             );
 
-            List<Habitacion> habinicial = habitacionRepository.findHabitacionConfig(guayabo.getNombre());
-            if (habinicial.isEmpty()) {
-                habitacionRepository.save(guayabo);
-                habinicial.clear();
-            }
-
-            habinicial = habitacionRepository.findHabitacionConfig(losLapachos.getNombre());
-            if (habinicial.isEmpty()) {
-                habitacionRepository.save(losLapachos);
-            }
-
-//            habitacionRepository.saveAll(Arrays.asList(guayabo, losLapachos));
+            habitacionRepository.saveAll(Arrays.asList(guayabo, losLapachos));
 
         };
     }

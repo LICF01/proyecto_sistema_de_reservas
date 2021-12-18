@@ -5,7 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 
 @Configuration
@@ -29,15 +31,9 @@ public class ClienteConfig {
                     "3"
             );
 
-            List<Cliente> clienteInicial = clienteRepository.findClienteConfig(Alex.getMail());
-            if (clienteInicial.isEmpty()) {
-                clienteRepository.save(Alex);
-            }
-
-
-//            clienteRepository.saveAll(
-//                    List.of(Alex)
-//            );
+            clienteRepository.saveAll(
+                    List.of(Alex)
+            );
 
         };
     }

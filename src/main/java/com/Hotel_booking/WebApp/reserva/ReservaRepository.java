@@ -22,11 +22,5 @@ public interface ReservaRepository extends JpaRepository <Reserva,Long>{
     @Query(value = "SELECT * FROM reserva WHERE habitacion_id=?1", nativeQuery = true)
     List<Reserva> findAllReservaHabitacion(long codHabitacion);
 
-    @Query(value = "SELECT * FROM reserva WHERE Reserva_ID=?1", nativeQuery = true)
-    Optional<Reserva> findByReservaID(long codReserva);
-
-    @Query("SELECT r FROM Reserva r WHERE r.fechaIngreso = ?1")
-    List<Reserva> findReservaConfig(LocalDate fechaIngreso);
-
 
 }
