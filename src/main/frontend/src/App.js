@@ -9,8 +9,10 @@ import Usuarios from './pages/Usuarios';
 import SideBar from './components/DrawerWrapper';
 import NavBar from './components/NavBar';
 import NuevoUsuario from './pages/NewUser';
+import Habitaciones from "./pages/Habitaciones";
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
           />
           <Route exact path="/usuarios" element={<Usuarios />} />
           <Route exact path="/nuevousuario" element={<NuevoUsuario />} />
+          <Route exact path="/habitaciones" element={<Habitaciones />} />
         </Routes>
       </Box>
     </Router>
