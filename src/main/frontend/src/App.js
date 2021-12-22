@@ -10,6 +10,7 @@ import SideBar from './components/DrawerWrapper';
 import NavBar from './components/NavBar';
 import NuevoUsuario from './pages/NewUser';
 import Habitaciones from "./pages/Habitaciones";
+import NuevaHabitacion from "./pages/NewHabitacion";
 import UserConfirmed from './pages/UserConfirmed';
 import EditUser from './pages/EditUser';
 
@@ -34,6 +35,7 @@ function App() {
           <Route exact path="/usuarios" element={<Usuarios />} />
           <Route exact path="/nuevousuario" element={<NuevoUsuario />} />
           <Route exact path="/habitaciones" element={<Habitaciones />} />
+          <Route exact path="/nuevahabitacion" element={<NuevaHabitacion />} />
           <Route exact path="/user/confirmed" element={<UserConfirmed />} />
           <Route exact path="/user/edit" element={<EditUser />} />
         </Routes>
