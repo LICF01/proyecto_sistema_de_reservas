@@ -1,5 +1,6 @@
 package com.Hotel_booking.WebApp.security.config;
 
+import com.Hotel_booking.WebApp.security.CustomAuthenticationFilter;
 import com.Hotel_booking.WebApp.usuario.UsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @AllArgsConstructor
@@ -25,6 +27,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        customAuthenticationFilter.setFilterProcessesUrl("/api/login");
+
         http
                 .csrf().disable()
                 .authorizeRequests()
@@ -33,7 +39,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated().and()
                 .formLogin()
-        ;
+                .loginPage("/mylogin").permitAll()
+                .usernameParameter("email").passwordParameter("password");
+
+        http.addFilter(customAuthenticationFilter);
     }
 
 

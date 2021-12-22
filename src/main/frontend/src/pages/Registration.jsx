@@ -1,16 +1,17 @@
-import React from "react";
-import { Formik, Form } from "formik";
-import axios from "axios";
-import * as Yup from "yup";
-import { Container, Grid, Paper, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import TextField from "../components/FormUI/TextFieldWrapper";
-import Button from "../components/FormUI/ButtonWrapper";
-import Link from "../components/FormUI/LinkWrapper";
-import Avatar from "@mui/material/Avatar";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import React from 'react';
+import { Formik, Form } from 'formik';
+import axios from 'axios';
+import * as Yup from 'yup';
+import { Container, Grid, Paper, Typography, Divider } from '@mui/material';
+import { Box } from '@mui/system';
+import TextField from '../components/FormUI/TextFieldWrapper';
+import Button from '../components/FormUI/ButtonWrapper';
+import Link from '../components/FormUI/LinkWrapper';
+import Avatar from '@mui/material/Avatar';
+import PersonIcon from '@mui/icons-material/Person';
+import { useNavigate } from 'react-router-dom';
 
-const baseURL = "http://localhost:8080/perform_login";
+const baseURL = 'http://localhost:8080/perform_login';
 
 const registerUser = (user) => {
   axios.post(baseURL, user).then((response) => {
@@ -19,90 +20,104 @@ const registerUser = (user) => {
 };
 
 const INITIAL_FORM_STATE = {
-    name: "",
-    lastName: "",
-    email: "",
-    password: "",
-    telefono: "",
-    fechaNac: "",
-    tipoDocumento: "",
-    numeroDocumento: ""
+  name: '',
+  lastName: '',
+  email: '',
+  password: '',
+  telefono: '',
+  fechaNac: '',
+  tipoDocumento: '',
+  numeroDocumento: '',
 };
 
 const FORM_VALIDATION = Yup.object().shape({
-  name: Yup.string().required("Obligatorio"),
-  lastName: Yup.string().required("Obligatorio"),
-  email: Yup.string()
-    .email("El correo no es válido")
-    .required("Obligatorio"),
-  password: Yup.string().required("Obligatorio"),
-  telefono: Yup.string().required("Obligatorio"),
-  fechaNac: Yup.string().required("Obligatorio"),
-  tipoDocumento: Yup.string().required("Obligatorio"),
-  numeroDocumento: Yup.string().required("Obligatorio"),
+  name: Yup.string().required('Obligatorio'),
+  lastName: Yup.string().required('Obligatorio'),
+  email: Yup.string().email('El correo no es válido').required('Obligatorio'),
+  password: Yup.string().required('Obligatorio'),
+  telefono: Yup.string().required('Obligatorio'),
+  fechaNac: Yup.string().required('Obligatorio'),
+  tipoDocumento: Yup.string().required('Obligatorio'),
+  numeroDocumento: Yup.string().required('Obligatorio'),
 });
 
 function Registration() {
+  let navigate = useNavigate();
+
+  const handleLogin = () => navigate('/mylogin');
+
+  const handleSubmit = async (values) => {
+    console.log(values);
+    const response = await fetch('/api/registro', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (response.status !== 200)
+      return alert(response.message);
+
+    const data = await response.json();
+
+    navigate('/passwords/mailsent');
+  };
   return (
-    <Container component="div" maxWidth="xs">
+    <Container component="div" maxWidth="md">
       <Grid
         container
         direction="column"
         alignItems="center"
         justifyContent="center"
-        marginTop={-10}
-        style={{ minHeight: "100vh" }}
+        marginTop={-5}
+        style={{ minHeight: '100vh' }}
       >
-        <Grid item xs={12}>
+        <Grid item>
           <Paper variant="outlined" elevation={0}>
             <Box p={5}>
-              <Grid item container justifyContent="center" xs={12}>
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                  <LockOutlinedIcon />
-                </Avatar>
-                <Grid item container justifyContent="center" xs={12}>
-                  <Typography variant="h5">Bienvenido!</Typography>
-                </Grid>
-              </Grid>
               <Formik
                 initialValues={{
                   ...INITIAL_FORM_STATE,
                 }}
                 validationSchema={FORM_VALIDATION}
+                validateOnChange={false}
+                validateOnBlur={false}
                 onSubmit={(values) => {
-                  registerUser(values);
+                  handleSubmit(values);
                 }}
               >
                 <Form>
-                  <Grid container spacing={3}>
-                    <Grid item container xs={12} justifyContent="center">
+                  <Grid container spacing={6}>
+                    <Grid
+                      item
+                      container
+                      justifyContent="center"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      <Typography variant="h3">
+                        Formulario de registro
+                      </Typography>
                       <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
-                        Ingrese sus credenciales para continuar
+                        Complete los siguientes campos
                       </Typography>
                     </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        name="name"
-                        label="Nombre"
-                        autoFocus
-                      />
+                    <Grid item xs={6}>
+                      <TextField name="name" label="Nombre" autoFocus />
                     </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        name="lastName"
-                        label="Apellido"
-                        autoFocus
-                      />
+                    <Grid item xs={6}>
+                      <TextField name="lastName" label="Apellido" />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                       <TextField
                         name="email"
                         label="Email"
                         autoComplete="email"
-                        autoFocus
                       />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                       <TextField
                         name="password"
                         label="Contraseña"
@@ -111,37 +126,45 @@ function Registration() {
                         autoComplete="current-password"
                       />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
+                      <TextField name="telefono" label="Telefono" type="tel" />
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField name="fechaNac" label="Fecha de nacimiento" />
+                    </Grid>
+                    <Grid item xs={6}>
                       <TextField
-                        name="telefono"
-                        label="Telefono"
-                        type="tel"
-                        autoFocus
-
-
+                        name="tipoDocumento"
+                        label="Tipo de Documento"
                       />
                     </Grid>
-                    <Grid container item>
-                      <Grid item xs>
+                    <Grid item xs={6}>
+                      <TextField
+                        name="numeroDocumento"
+                        label="Numero de documento"
+                      />
+                    </Grid>
+                    <Grid container item justifyContent="center" spacing={2}>
+                      <Grid item xs={6}>
+                        <Button type="submit" value="submit">
+                          Registrar
+                        </Button>
+                      </Grid>
+                    </Grid>
+                    <Grid
+                      container
+                      item
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={2}
+                    >
+                      <Grid item>
                         <Typography variant="caption">
-                          Mantenme conectado
+                          Ya posee una cuenta?
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Link>Olvidó su contraseña?</Link>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Button>Ingresar</Button>
-                    </Grid>
-                    <Grid container item alignItems="center">
-                      <Grid item xs>
-                        <Typography variant="caption">
-                          No posee una cuenta?
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Button variant="outlined">Registrese</Button>
+                        <Link url="/mylogin">Ingrese aquí</Link>
                       </Grid>
                     </Grid>
                   </Grid>

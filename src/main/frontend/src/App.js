@@ -9,6 +9,8 @@ import Usuarios from './pages/Usuarios';
 import SideBar from './components/DrawerWrapper';
 import NavBar from './components/NavBar';
 import NuevoUsuario from './pages/NewUser';
+import UserConfirmed from './pages/UserConfirmed';
+import EditUser from './pages/EditUser';
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
@@ -30,6 +32,8 @@ function App() {
           />
           <Route exact path="/usuarios" element={<Usuarios />} />
           <Route exact path="/nuevousuario" element={<NuevoUsuario />} />
+          <Route exact path="/user/confirmed" element={<UserConfirmed />} />
+          <Route exact path="/user/edit" element={<EditUser />} />
         </Routes>
       </Box>
     </Router>

@@ -1,14 +1,17 @@
-import React from "react";
-import { Link } from "@mui/material";
+import React from 'react';
+import { Link } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-const LinkWrapper = ({ children, ...otherProps }) => {
+const LinkWrapper = ({ children, url, ...otherProps }) => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    console.info("I'm a button.");
+    navigate(url);
   };
 
   const configLink = {
-    component: "a",
-    variant: "body2",
+    component: 'button',
+    variant: 'body2',
     onClick: handleClick,
   };
 
