@@ -1,7 +1,7 @@
 {
   "name": "booking-system",
-  "homepage": "http://localhost:8080",
-  "proxy": "http://localhost:8080",
+  "homepage": "https://spring-boot-sistema-booking.herokuapp.com",
+  "proxy": "https://spring-boot-sistema-booking.herokuapp.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
