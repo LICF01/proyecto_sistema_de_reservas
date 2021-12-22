@@ -82,6 +82,8 @@ function NewUser() {
                   ...INITIAL_FORM_STATE,
                 }}
                 validationSchema={FORM_VALIDATION}
+                validateOnChange={false}
+                validateOnBlur={false}
                 onSubmit={(values) => {
                   handleSubmit(values);
                 }}
@@ -97,13 +99,12 @@ function NewUser() {
                       <TextField name="name" label="Nombre" autoFocus />
                     </Grid>
                     <Grid item xs={4}>
-                      <TextField name="lastName" label="Apellido" autoFocus />
+                      <TextField name="lastName" label="Apellido" />
                     </Grid>
                     <Grid item xs={4}>
                       <TextField
                         name="fechaNac"
                         label="Fecha de nacimiento"
-                        autoFocus
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -111,7 +112,6 @@ function NewUser() {
                         name="email"
                         label="Email"
                         autoComplete="email"
-                        autoFocus
                       />
                     </Grid>
                     <Grid item xs={6}>
@@ -128,21 +128,18 @@ function NewUser() {
                         name="telefono"
                         label="Telefono"
                         type="tel"
-                        autoFocus
                       />
                     </Grid>
                     <Grid item xs={3}>
                       <TextField
                         name="tipoDocumento"
                         label="Tipo de Documento"
-                        autoFocus
                       />
                     </Grid>
                     <Grid item xs={5}>
                       <TextField
                         name="numeroDocumento"
                         label="Numero de documento"
-                        autoFocus
                       />
                     </Grid>
                     <Grid container item justifyContent="flex-end" spacing={2}>
