@@ -79,12 +79,11 @@ public class RegistroService {
         usuarioService.enableUsuario(
                 confirmationToken.getUsuario().getMail());
 
-        confirmationTokenRepository.delete(confirmationTokenRepository.findByToken(token));
 
-//        return ResponseHandler.generateResponse( "El usuario confirmado", HttpStatus.OK, confirmationToken.getUsuario().getMail());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "localhost:8080/user/confirmed");
-        return new ResponseEntity(headers, HttpStatus.FOUND);
+        return ResponseHandler.generateResponse( "El usuario confirmado", HttpStatus.OK, confirmationToken.getUsuario().getMail());
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Location", "localhost:8080/user/confirmed");
+//        return new ResponseEntity(headers, HttpStatus.FOUND);
     }
 
     private String buildEmail(String name, String link) {
