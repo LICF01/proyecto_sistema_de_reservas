@@ -4,6 +4,7 @@ import com.Hotel_booking.WebApp.Utility.ResponseHandler;
 import com.Hotel_booking.WebApp.email.EmailSender;
 import com.Hotel_booking.WebApp.exceptions.CustomErrorException;
 import com.Hotel_booking.WebApp.registro.token.ConfirmationToken;
+import com.Hotel_booking.WebApp.registro.token.ConfirmationTokenRepository;
 import com.Hotel_booking.WebApp.registro.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class UsuarioService implements UserDetailsService {
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
     private final EmailSender emailSender;
 
     public List<Usuario> getUsuarios() {
@@ -282,6 +284,7 @@ public class UsuarioService implements UserDetailsService {
             throw new CustomErrorException(HttpStatus.OK, "Usuario correctamente eliminado");
         }
     }
+
 
     private String mensaje() {
         throw new CustomErrorException(HttpStatus.NOT_FOUND, "Número de usuario inexistente");

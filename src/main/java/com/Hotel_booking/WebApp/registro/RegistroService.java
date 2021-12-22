@@ -1,12 +1,17 @@
 package com.Hotel_booking.WebApp.registro;
 
+import com.Hotel_booking.WebApp.Utility.ResponseHandler;
 import com.Hotel_booking.WebApp.email.EmailSender;
 import com.Hotel_booking.WebApp.registro.token.ConfirmationToken;
+import com.Hotel_booking.WebApp.registro.token.ConfirmationTokenRepository;
 import com.Hotel_booking.WebApp.registro.token.ConfirmationTokenService;
 import com.Hotel_booking.WebApp.usuario.UserRole;
 import com.Hotel_booking.WebApp.usuario.Usuario;
 import com.Hotel_booking.WebApp.usuario.UsuarioService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,13 +24,14 @@ public class RegistroService {
     private final UsuarioService usuarioService;
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
     private final EmailSender emailSender;
 
-    public String register(RegistroRequest request) {
+    public ResponseEntity<Object> register(RegistroRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
 
         if (!isValidEmail) {
-            throw new IllegalStateException("El mail es invalido");
+            return ResponseHandler.generateResponse( "El mail no es valido", HttpStatus.BAD_REQUEST, request.getEmail());
         }
 
         String token = usuarioService.signUpUsuario(new Usuario(
@@ -47,12 +53,13 @@ public class RegistroService {
                 request.getEmail(),
                 buildEmail(request.getName(), link));
 
-        return token;
+
+        return ResponseHandler.generateResponse( "Mail de confirmación enviado", HttpStatus.OK, token);
     }
 
 
     @Transactional
-    public String confirmToken (String token){
+    public ResponseEntity confirmToken (String token){
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
@@ -71,7 +78,13 @@ public class RegistroService {
         confirmationTokenService.setConfirmedAt(token);
         usuarioService.enableUsuario(
                 confirmationToken.getUsuario().getMail());
-        return "confirmado";
+
+        confirmationTokenRepository.delete(confirmationTokenRepository.findByToken(token));
+
+//        return ResponseHandler.generateResponse( "El usuario confirmado", HttpStatus.OK, confirmationToken.getUsuario().getMail());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "localhost:8080/user/confirmed");
+        return new ResponseEntity(headers, HttpStatus.FOUND);
     }
 
     private String buildEmail(String name, String link) {

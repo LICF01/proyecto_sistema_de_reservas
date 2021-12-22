@@ -1,11 +1,29 @@
 import * as React from 'react';
+import axios from 'axios';
 import Box from '@mui/material/Box';
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import MaterialTable, { MTableToolbar } from '@material-table/core';
-import NewUser from './NewUser';
-import { Button } from "@mui/material";
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const columns = [
   { field: 'id', title: 'ID' },
@@ -19,55 +37,59 @@ const columns = [
   { field: 'locked', title: 'Bloqueado' },
   { field: 'mail', title: 'Email' },
   { field: 'nroDocumento', title: 'Documento' },
-  // { field: 'roles', title: 'Tipo de Usuario'},
   { field: 'telefono', title: 'Contacto' },
   { field: 'tipoDocumento', title: 'Tipo Documento' },
 ];
-//
-// const columns = [
-// 	{title: 'Artista', field: 'artista'},
-// 	{title: 'Pais', field: 'pais'}
-// ]
-// const data = [
-// 	{nombre: 'asdfasdfa', apellido: 'asdfasdf'}
-// ]
-
-// const rows = [
-//   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-//   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-//   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-//   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-//   { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-//   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-//   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-//   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-//   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-// ];
 
 const Usuarios = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [users, setUsers] = React.useState([]);
+  const [user, setUser] = React.useState([]);
+  const [response, setResponse] = React.useState([]);
+  const [showAlert, setShowAlert] = React.useState(false);
+  const [showMessage, setShowMessage] = React.useState(false);
 
-  const getData = async () => {
-    const response = await fetch('/api/usuario/usuarios', {
-      method: 'GET',
+  const handleAlertOpen = () => {
+    setShowAlert(true);
+  };
+
+  const handleAlertClose = () => {
+    setShowAlert(false);
+  };
+
+  const handleMessageOpen = () => {
+    setShowMessage(true);
+  };
+
+  const handleMessageClose = () => {
+    setShowMessage(false);
+  };
+  const getData = () => {
+    axios.get('/api/usuario/usuarios').then((response) => {
+      setUsers(response.data);
     });
+  };
 
-    console.log(response);
-
-    const data = await response.json();
-
-    console.log(data);
-
-    setUsers(data);
+  const deleteUser = () => {
+    handleAlertClose();
+    axios.delete('/api/usuario/' + user.id).then((response) => {
+      setResponse(response.data);
+      handleMessageOpen();
+      navigate(0);
+    });
   };
 
   React.useEffect(() => {
     getData();
   }, []);
 
-  const handleClick = () =>  
-    navigate('/nuevousuario')
+  const selectUser = (rowData, action) => {
+    action === 'edit'
+      ? navigate('/user/edit', { state: rowData })
+      : navigate('/user/delete', rowData.id);
+  };
+
+  const handleClick = () => navigate('/nuevousuario');
 
   return (
     <Box component="main" sx={{ width: '100%', paddingTop: 10 }}>
@@ -81,14 +103,15 @@ const Usuarios = () => {
               icon: 'edit',
               tooltip: 'Editar usuario',
               onClick: (event, rowData) => {
-                // Do save operation
+                selectUser(rowData, 'edit');
               },
             },
             {
               icon: 'delete',
               tooltip: 'Eliminar usuario',
               onClick: (event, rowData) => {
-                // Do save operation
+                setUser(rowData);
+                handleAlertOpen();
               },
             },
           ]}
@@ -106,11 +129,51 @@ const Usuarios = () => {
                 <Box sx={{ flexGrow: 1, paddingRight: 5 }}>
                   <MTableToolbar {...props} />
                 </Box>
-                <Button variant="outlined" onClick={handleClick}>Añadir Usuario</Button>
+                <Button variant="outlined" onClick={handleClick}>
+                  Añadir Usuario
+                </Button>
               </Box>
             ),
           }}
         />
+
+        <Dialog
+          open={showAlert}
+          onClose={handleAlertClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title" sx={{}}>
+            El siguiente usuario sera eliminado {user.mail}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Esta seguro de querer continuar con la operación?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleAlertClose}>Cancelar</Button>
+            <Button onClick={deleteUser} autoFocus>
+              Aceptar
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Modal
+          open={showMessage}
+          onClose={handleMessageClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={modalStyle}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Text in a modal
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {response.message}
+            </Typography>
+          </Box>
+        </Modal>
       </Container>
     </Box>
   );
