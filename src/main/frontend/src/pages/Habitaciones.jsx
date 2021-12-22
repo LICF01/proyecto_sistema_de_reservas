@@ -32,13 +32,13 @@ const columns = [
         field: 'cantidadPersonas',
         title: 'Cantidad Personas',
     },
-    { field: 'tipoHabitacion', title: 'Tipo Habitacion' },
+    { field: 'tipoHabitacion', title: 'Tipo Habitación' },
     { field: 'cocinaSN', title: 'Cocina S/N' },
     { field: 'tvhabitacion', title: 'TV S/N' },
     { field: 'camaExtraSN', title: 'Cama Extra S/N' },
     { field: 'precioAdulto', title: 'Precio Adulto' },
     { field: 'precioNinho', title: 'Precio Niño' },
-    { field: 'precioMinimo', title: 'Precio Minimo' },
+    { field: 'precioMinimo', title: 'Precio Mínimo' },
 ];
 
 const Habitaciones = () => {
@@ -70,10 +70,11 @@ const Habitaciones = () => {
         });
     };
 
-    const deleteUser = () => {
+    const deleteHabitacion = () => {
         handleAlertClose();
-        axios.delete('/api/habitacion/' + habitacion.id).then((response) => {
-            setResponse(response.data);
+        axios.delete('/api/habitacion/' + habitacion.codHabitacion).then((response) => {
+            setResponse(response.data.message)
+            alert(response.data.message)
             handleMessageOpen();
             navigate(0);
         });
@@ -85,8 +86,8 @@ const Habitaciones = () => {
 
     const selectHab = (rowData, action) => {
         action === 'edit'
-            ? navigate('/user/edit', { state: rowData })
-            : navigate('/user/delete', rowData.id);
+            ? navigate('/habitacion/edit', { state: rowData })
+            : navigate('/habitacion/delete', rowData.id);
     };
 
     const handleClick = () => navigate('/nuevahabitacion');
@@ -97,7 +98,7 @@ const Habitaciones = () => {
                 <MaterialTable
                     columns={columns}
                     data={habitaciones}
-                    title="Lista de usuarios"
+                    title="Lista de habitaciones"
                     actions={[
                         {
                             icon: 'edit',
@@ -144,51 +145,23 @@ const Habitaciones = () => {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title" sx={{}}>
-                        El siguiente usuario sera eliminado {habitacion.nombre}
+                        La siguiente habitación será eliminada: {habitacion.nombre}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Esta seguro de querer continuar con la operación?
+                            ¿Está seguro de querer continuar con la operación?
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleAlertClose}>Cancelar</Button>
-                        <Button onClick={deleteUser} autoFocus>
+                        <Button onClick={deleteHabitacion} autoFocus>
                             Aceptar
                         </Button>
                     </DialogActions>
                 </Dialog>
-
-                <Modal
-                    open={showMessage}
-                    onClose={handleMessageClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={modalStyle}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            Text in a modal
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            {response.message}
-                        </Typography>
-                    </Box>
-                </Modal>
             </Container>
         </Box>
     );
 };
 
 export default Habitaciones;
-
-
-
-
-    // const handleEliminate= (e) => {
-    //     console.log(e);
-    //     const {codHabitacion} = e;
-    //     console.log(codHabitacion);
-    //     fetch('/api/habitacion/' + codHabitacion, {
-    //         method: 'DELETE',
-    //     }).then(response => response.json());
-    // }

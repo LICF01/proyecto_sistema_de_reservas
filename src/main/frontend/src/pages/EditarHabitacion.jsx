@@ -6,19 +6,7 @@ import { Container, Grid, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import TextField from '../components/FormUI/TextFieldWrapper';
 import Button from '../components/FormUI/ButtonWrapper';
-import { useNavigate } from 'react-router-dom';
-
-const INITIAL_FORM_STATE = {
-    nombre: '',
-    cantidadPersonas: '',
-    tipoHabitacion: '',
-    cocinaSN: '',
-    tvhabitacion: '',
-    camaExtraSN: '',
-    precioAdulto: '',
-    precioNinho: '',
-    precioMinimo: '',
-};
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const FORM_VALIDATION = Yup.object().shape({
     nombre: Yup.string().required('Obligatorio'),
@@ -32,53 +20,47 @@ const FORM_VALIDATION = Yup.object().shape({
     precioMinimo: Yup.number().positive('Debe ingresar un numero positivo').integer().required('Obligatorio'),
 });
 
-
-function NewHabitacion() {
+function EditarHabitacion() {
     let navigate = useNavigate();
+    const { state } = useLocation();
+    console.log(state);
 
     const handleCancel = () => navigate('/habitaciones');
 
-    const handleSubmit= async (values) => {
-        console.log(values)
-        // axios.post('/api/habitacion', values).then((response) => {
-        //     alert(response.data.message);
-        //     navigate('/habitaciones');
-        // });
-        const response = await fetch('/api/habitacion', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values)
-        }).catch ((error) => {
-            alert(error.response.data.message);
-        });;
-
-        if (!(response.status === 201)) return alert('Debe ingresar los datos correctos')
-
-        const data = await response.json();
-
-
-        navigate('/habitaciones');
+    const INITIAL_FORM_STATE = {
+        nombre: state.nombre,
+        cantidadPersonas: state.cantidadPersonas,
+        tipoHabitacion: state.tipoHabitacion,
+        cocinaSN: state.cocinaSN,
+        tvhabitacion: state.tvhabitacion,
+        camaExtraSN: state.camaExtraSN,
+        precioAdulto: state.precioAdulto,
+        precioNinho: state.precioNinho,
+        precioMinimo: state.precioMinimo,
     };
 
+    const handleSubmit = (values) => {
+        axios.put('/api/habitacion/' + state.codHabitacion, values).then((response) => {
+            alert(response.data.message);
+            navigate('/habitaciones');
+        }).catch ((error) => {
+            alert(error.response.data.message);
+        });
+    };
 
     return (
-        <Container component="div" maxWidth="md">
+        <Container component="div" maxWidth="sm">
             <Grid
                 container
                 direction="column"
                 alignItems="center"
                 justifyContent="center"
-                marginTop={-10}
+                marginTop={-4}
                 style={{ minHeight: '100vh' }}
             >
                 <Grid item>
                     <Paper variant="outlined" elevation={0}>
                         <Box p={5}>
-                            <Grid item container justifyContent="center">
-                            </Grid>
                             <Formik
                                 initialValues={{
                                     ...INITIAL_FORM_STATE,
@@ -91,19 +73,28 @@ function NewHabitacion() {
                                 }}
                             >
                                 <Form>
-                                    <Grid container spacing={3}>
-                                        <Grid item container xs={12} justifyContent="left">
+                                    <Grid container spacing={6}>
+                                        <Grid
+                                            item
+                                            container
+                                            justifyContent="center"
+                                            flexDirection="column"
+                                            alignItems="center"
+                                        >
+                                            <Typography variant="h3">
+                                                {state.nombre}
+                                            </Typography>
                                             <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
-                                                Ingresar los datos de la habitacion:
+                                                Modificar Datos de la Habitación
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={12}>
                                             <TextField name="nombre" label="Nombre" autoFocus />
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={12}>
                                             <TextField name="cantidadPersonas" label="Cantidad de Personas" />
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={12}>
                                             <TextField
                                                 name="tipoHabitacion"
                                                 label="Tipo de Habitacion"
@@ -145,15 +136,15 @@ function NewHabitacion() {
                                                 label="Precio Minimo"
                                             />
                                         </Grid>
-                                        <Grid container item justifyContent="flex-end" spacing={2}>
-                                            <Grid item xs={2}>
-                                                <Button variant="outlined" onClick={handleCancel}>
-                                                    Cancelar
+                                        <Grid container item justifyContent="center" spacing={2}>
+                                            <Grid item xs={5}>
+                                                <Button value="submit">
+                                                    Guardar
                                                 </Button>
                                             </Grid>
-                                            <Grid item xs={2}>
-                                                <Button value="submit">
-                                                    Aceptar
+                                            <Grid item xs={5}>
+                                                <Button variant="outlined" onClick={handleCancel}>
+                                                    Cancelar
                                                 </Button>
                                             </Grid>
                                         </Grid>
@@ -168,4 +159,4 @@ function NewHabitacion() {
     );
 }
 
-export default NewHabitacion;
+export default EditarHabitacion;
