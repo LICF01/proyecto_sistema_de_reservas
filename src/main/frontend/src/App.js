@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import Login from './pages/Login';
+import Login from './pages/Login.jsx';
 import Registration from './pages/Registration';
 import PasswordReset from './pages/PasswordReset';
 import MailSent from './pages/MailSent';
@@ -11,8 +11,10 @@ import NavBar from './components/NavBar';
 import NuevoUsuario from './pages/NewUser';
 import Habitaciones from "./pages/Habitaciones";
 import NuevaHabitacion from "./pages/NewHabitacion";
+import Pagos from "./pages/Pagos";
 import UserConfirmed from './pages/UserConfirmed';
 import EditUser from './pages/EditUser';
+import EditarHabitacion from "./pages/EditarHabitacion";
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
@@ -36,8 +38,10 @@ function App() {
           <Route exact path="/nuevousuario" element={<NuevoUsuario />} />
           <Route exact path="/habitaciones" element={<Habitaciones />} />
           <Route exact path="/nuevahabitacion" element={<NuevaHabitacion />} />
+          <Route exact path="/habitacion/edit" element={<EditarHabitacion />} />
           <Route exact path="/user/confirmed" element={<UserConfirmed />} />
           <Route exact path="/user/edit" element={<EditUser />} />
+          <Route exact path="/pagos" element={<Pagos />} />
         </Routes>
       </Box>
     </Router>
