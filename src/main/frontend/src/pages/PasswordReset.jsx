@@ -93,7 +93,7 @@ const PasswordReset = () => {
                     </Grid>
                     <Grid container item justifyContent="center">
                       <Grid item justifyContent="center">
-                        <Link>Regresear al login</Link>
+                        <Link url="/mylogin">Regresear al login</Link>
                       </Grid>
                     </Grid>
                   </Grid>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
@@ -12,49 +12,63 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import LoginIcon from '@mui/icons-material/Login';
+import Link from './FormUI/LinkWrapper';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
 const DrawerWrapper = () => {
-	return (
-		<div>
+  let navigate = useNavigate();
 
-<Drawer
+	const handleClicks = (path) => {
+		console.log(path)
+		navigate(path)
+	}
+
+  return (
+    <div>
+      <Drawer
         variant="permanent"
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
         }}
       >
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            <ListItem button key="Usuarios" onClick={(event) => handleClicks("/usuarios")}>
+              <ListItemIcon>
+                <PeopleAltIcon />
+              </ListItemIcon>
+              <ListItemText primary="Usuarios" />
+            </ListItem>
           </List>
           <Divider />
           <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            <ListItem button key="Login" onClick={(event) => handleClicks("/mylogin")}>
+              <ListItemIcon>
+                <LoginIcon />
+              </ListItemIcon>
+              <ListItemText primary="login" />
+            </ListItem>
+            <ListItem button key="" onClick={(event) => handleClicks("/mylogin")}>
+              <ListItemIcon>
+                <LoginIcon />
+              </ListItemIcon>
+              <ListItemText primary="login" />
+            </ListItem>
           </List>
         </Box>
       </Drawer>
-			
-		</div>
-	)
-}
+    </div>
+  );
+};
 
-export default DrawerWrapper
+export default DrawerWrapper;

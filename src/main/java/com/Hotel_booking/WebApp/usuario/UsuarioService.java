@@ -8,6 +8,7 @@ import com.Hotel_booking.WebApp.registro.token.ConfirmationTokenRepository;
 import com.Hotel_booking.WebApp.registro.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,12 +38,15 @@ public class UsuarioService implements UserDetailsService {
         return usuarioRepository.findAll();
     }
 
-    public void addNewUsuario(Usuario usuario) {
+    public ResponseEntity<Object> addNewUsuario(Usuario usuario) {
         Optional<Usuario> usuarioByEmail = usuarioRepository.findByMail(usuario.getMail());
         if (usuarioByEmail.isPresent()) {
             throw new IllegalStateException("email taken");
         }
+        usuario.setTipoUsuario(UserRole.USER);
         usuarioRepository.save(usuario);
+
+        return ResponseHandler.generateResponse( "Se ha agregado un nuevo usuario", HttpStatus.OK, usuario);
     }
 
     @Override
