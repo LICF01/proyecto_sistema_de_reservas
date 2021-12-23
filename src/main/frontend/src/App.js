@@ -18,7 +18,8 @@ import EditUser from './pages/EditUser';
 import EditarHabitacion from "./pages/EditarHabitacion";
 import Reservas from './pages/Reserva';
 import EditReserva from './pages/EditarReserva';
-// import NuevoPago from './pages/NewPago';
+import NuevoPago from './pages/NewPago';
+import EditarPagos from './pages/EditPagos';
 
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -48,13 +49,17 @@ function App() {
           <Route exact path="/nuevousuario" element={<NuevoUsuario />} />
           <Route exact path="/user/confirmed" element={<UserConfirmed />} />
           <Route exact path="/user/edit" element={<EditUser />} />
-		  
+
 
           <Route exact path="/habitaciones" element={<Habitaciones />} />
           <Route exact path="/nuevahabitacion" element={<NuevaHabitacion />} />
           <Route exact path="/habitacion/edit" element={<EditarHabitacion />} />
 
           <Route exact path="/pagos" element={<Pagos />} />
+          <Route exact path="/nuevopago" element={<NuevoPago />} />
+          <Route exact path="/pago/edit" element={<EditarPagos />} />
+
+
           <Route exact path="/reservas" element={<Reservas />} />
         </Route>
       </Routes>

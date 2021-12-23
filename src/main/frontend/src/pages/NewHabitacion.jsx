@@ -53,7 +53,7 @@ function NewHabitacion() {
             body: JSON.stringify(values)
         }).catch ((error) => {
             alert(error.response.data.message);
-        });;
+        });
 
         if (!(response.status === 201)) return alert('Debe ingresar los datos correctos')
 
