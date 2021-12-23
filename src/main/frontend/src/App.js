@@ -20,6 +20,7 @@ import Reservas from './pages/Reserva';
 import EditReserva from './pages/EditarReserva';
 import NuevoPago from './pages/NewPago';
 import EditarPagos from './pages/EditPagos';
+import NuevaReserva from './pages/NewReserva';
 
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -61,6 +62,7 @@ function App() {
 
 
           <Route exact path="/reservas" element={<Reservas />} />
+          <Route exact path="/nuevareserva" element={<NuevaReserva />} />
           <Route exact path="/reserva/edit" element={<EditReserva />} />
         </Route>
       </Routes>

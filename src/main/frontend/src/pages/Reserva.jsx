@@ -42,8 +42,6 @@ const columns = [
 const Reserva = () => {
   const navigate = useNavigate();
   const [user, setUser] = React.useState([]);
-  const [users, setUsers] = React.useState([]);
-  const [habitaciones, setHabitaciones] = React.useState([]);
   const [reservas, setReservas] = React.useState([]);
   const [response, setResponse] = React.useState([]);
   const [showAlert, setShowAlert] = React.useState(false);
@@ -99,7 +97,7 @@ const Reserva = () => {
       : navigate('/reserva/delete', rowData.id);
   };
 
-  const handleClick = () => navigate('/reserva/edit');
+  const handleClick = () => navigate('/nuevareserva');
 
   return (
     <Box component="main" sx={{ width: '100%', paddingTop: 10 }}>
@@ -139,9 +137,9 @@ const Reserva = () => {
                 <Box sx={{ flexGrow: 1, paddingRight: 5 }}>
                   <MTableToolbar {...props} />
                 </Box>
-                {/*<Button variant="outlined" onClick={handleClick}>*/}
-                {/*  Añadir Reserva*/}
-                {/*</Button>*/}
+                <Button variant="outlined" onClick={handleClick}>
+                  Añadir Reserva
+                </Button>
               </Box>
             ),
           }}
