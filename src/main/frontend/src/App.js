@@ -15,6 +15,10 @@ import Pagos from "./pages/Pagos";
 import UserConfirmed from './pages/UserConfirmed';
 import EditUser from './pages/EditUser';
 import EditarHabitacion from "./pages/EditarHabitacion";
+import Reservas from './pages/Reserva';
+import EditReserva from './pages/EditarReserva';
+// import NuevoPago from './pages/NewPago';
+
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
@@ -42,6 +46,10 @@ function App() {
           <Route exact path="/user/confirmed" element={<UserConfirmed />} />
           <Route exact path="/user/edit" element={<EditUser />} />
           <Route exact path="/pagos" element={<Pagos />} />
+          {/*<Route exact path="/nuevopago" element={<NuevoPago />} />*/}
+          <Route exact path="/reservas" element={<Reservas />} />
+          {/*<Route exact path="/reserva/edit" element={<EditReserva />} />*/}
+
         </Routes>
       </Box>
     </Router>

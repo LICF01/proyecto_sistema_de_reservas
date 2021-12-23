@@ -94,29 +94,29 @@ const Habitaciones = () => {
                     columns={columns}
                     data={pagos}
                     title="Lista de pagos"
-                    actions={[
-                        {
-                            icon: 'edit',
-                            tooltip: 'Editar pago',
-                            onClick: (event, rowData) => {
-                                selectPago(rowData, 'edit');
-                            },
-                        },
-                        {
-                            icon: 'delete',
-                            tooltip: 'Eliminar pago',
-                            onClick: (event, rowData) => {
-                                setPago(rowData);
-                                handleAlertOpen();
-                            },
-                        },
-                    ]}
-                    options={{ actionsColumnIndex: -1 }}
-                    localization={{
-                        header: {
-                            actions: 'Acciones',
-                        },
-                    }}
+                    // actions={[
+                    //     {
+                    //         icon: 'edit',
+                    //         tooltip: 'Editar pago',
+                    //         onClick: (event, rowData) => {
+                    //             selectPago(rowData, 'edit');
+                    //         },
+                    //     },
+                    //     {
+                    //         icon: 'delete',
+                    //         tooltip: 'Eliminar pago',
+                    //         onClick: (event, rowData) => {
+                    //             setPago(rowData);
+                    //             handleAlertOpen();
+                    //         },
+                    //     },
+                    // ]}
+                    // options={{ actionsColumnIndex: -1 }}
+                    // localization={{
+                    //     header: {
+                    //         actions: 'Acciones',
+                    //     },
+                    // }}
                     components={{
                         Toolbar: (props) => (
                             <Box
@@ -125,9 +125,9 @@ const Habitaciones = () => {
                                 <Box sx={{ flexGrow: 1, paddingRight: 5 }}>
                                     <MTableToolbar {...props} />
                                 </Box>
-                                <Button variant="outlined" onClick={handleClick}>
-                                    Añadir Pago
-                                </Button>
+                                {/*<Button variant="outlined" onClick={handleClick}>*/}
+                                {/*    Añadir Pago*/}
+                                {/*</Button>*/}
                             </Box>
                         ),
                     }}
