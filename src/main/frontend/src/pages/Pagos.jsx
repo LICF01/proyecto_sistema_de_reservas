@@ -66,10 +66,10 @@ const Habitaciones = () => {
         });
     };
 
-    const deleteUser = () => {
+    const deletePago = () => {
         handleAlertClose();
         axios.delete('/api/pago/' + pago.codPago).then((response) => {
-            setResponse(response.data.message)
+            //setResponse(response.data.message)
             alert(response.data.message)
             handleMessageOpen();
             navigate(0);
@@ -150,7 +150,7 @@ const Habitaciones = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleAlertClose}>Cancelar</Button>
-                        <Button onClick={deleteUser} autoFocus>
+                        <Button onClick={deletePago} autoFocus>
                             Aceptar
                         </Button>
                     </DialogActions>
