@@ -10,6 +10,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 const modalStyle = {
     position: 'absolute',
@@ -24,14 +26,14 @@ const modalStyle = {
 };
 
 const columns = [
-    { field: 'codPago', title: 'ID Pago' },
+    { field: 'codPago', title: 'ID' },
     { field: 'estado', title: 'Estado' },
     {
         field: 'fechaPago',
         title: 'Fecha de Pago',
     },
     { field: 'metodoPago', title: 'Método de Pago' },
-    { field: 'montoPago', title: 'Monto del Pago' },
+    { field: 'montoPago', title: 'Monto de Pago' },
     { field: 'reserva.codReserva', title: 'Código Reserva' },
     { field: 'reserva.cliente.nombre', title: 'Cliente' },
     { field: 'reserva.habitacion.nombre', title: 'Habitación' },

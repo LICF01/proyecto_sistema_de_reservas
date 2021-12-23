@@ -51,19 +51,19 @@ const DrawerWrapper = () => {
               <ListItemIcon>
                 <KingBedIcon />
               </ListItemIcon>
-              <ListItemText primary="habitaciones" />
+              <ListItemText primary="Habitaciones" />
             </ListItem>
             <ListItem button key="reservas" onClick={(event) => handleClicks("/reservas")}>
               <ListItemIcon>
                 <BookOnlineIcon />
               </ListItemIcon>
-              <ListItemText primary="reservas" />
+              <ListItemText primary="Reservas" />
             </ListItem>
             <ListItem button key="pagos" onClick={(event) => handleClicks("/pagos")}>
               <ListItemIcon>
                 <PaymentsIcon />
               </ListItemIcon>
-              <ListItemText primary="pagos" />
+              <ListItemText primary="Pagos" />
             </ListItem>
           <Divider />
           <List>
@@ -71,7 +71,7 @@ const DrawerWrapper = () => {
               <ListItemIcon>
                 <LoginIcon />
               </ListItemIcon>
-              <ListItemText primary="login" />
+              <ListItemText primary="Login" />
             </ListItem>
           </List>
         </Box>
