@@ -134,10 +134,10 @@ public class ReservaService {
                 reservaRepository.deleteById(IDReserva);
                 throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente eliminada");
             } else {
-                throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar una reserva con pagos");
+                throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar una reserva con pagos");
             }
         } else {
-            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar una reserva con fecha de inicio pasada");
+            throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar una reserva con fecha de inicio pasada");
         }
     }
 
