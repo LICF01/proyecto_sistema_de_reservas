@@ -26,22 +26,22 @@ const modalStyle = {
 };
 
 const columns = [
-  { field: 'codReserva', title: 'Código' },
+  { field: 'codReserva', title: 'ID' },
   { field: 'habitacion.nombre', title: 'Habitación' },
   {
     field: 'fechaIngreso',
     title: 'Fecha de Ingreso',
   },
   { field: 'fechaSalida', title: 'Fecha de salida' },
-  { field: 'cantidadAdultos', title: 'Cant. adultos' },
-  { field: 'cantidadNinhos', title: 'Cant. niños' },
+  { field: 'cantidadAdultos', title: 'Cant. de Adultos' },
+  { field: 'cantidadNinhos', title: 'Cant. de Niños' },
   { field: 'fechaReserva', title: 'Fecha de Reserva' },
   { field: 'precioTotal', title: 'Precio Total' },
 ];
 
 const Reserva = () => {
   const navigate = useNavigate();
-  const [user, setUser] = React.useState([]);
+  const [reserva, setReserva] = React.useState([]);
   const [reservas, setReservas] = React.useState([]);
   const [response, setResponse] = React.useState([]);
   const [showAlert, setShowAlert] = React.useState(false);
@@ -80,11 +80,11 @@ const Reserva = () => {
 
   const deleteUser = () => {
     handleAlertClose();
-    axios.delete('/api/usuario/' + user.id).then((response) => {
-      setResponse(response.data);
+    axios.delete('/api/reserva/' + reserva.codReserva).then((response) => {
+      alert(response.data.message)
       handleMessageOpen();
       navigate(0);
-    });
+    })
   };
 
   React.useEffect(() => {
@@ -118,7 +118,7 @@ const Reserva = () => {
               icon: 'delete',
               tooltip: 'Eliminar reserva',
               onClick: (event, rowData) => {
-                setUser(rowData);
+                setReserva(rowData);
                 handleAlertOpen();
               },
             },
@@ -152,11 +152,11 @@ const Reserva = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title" sx={{}}>
-            El siguiente usuario sera eliminado {user.mail}
+            El siguiente N° de Reserva será eliminado: {reserva.codReserva}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Esta seguro de querer continuar con la operación?
+              ¿Está seguro de querer continuar con la operación?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -166,22 +166,6 @@ const Reserva = () => {
             </Button>
           </DialogActions>
         </Dialog>
-
-        <Modal
-          open={showMessage}
-          onClose={handleMessageClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={modalStyle}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              {response.message}
-            </Typography>
-          </Box>
-        </Modal>
       </Container>
     </Box>
   );
