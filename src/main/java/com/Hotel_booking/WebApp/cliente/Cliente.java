@@ -48,7 +48,7 @@ public class Cliente extends Persona {
     private String nroRuc;
 
     @OneToMany(mappedBy = "cliente")
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Reserva> reservas;
 
 
