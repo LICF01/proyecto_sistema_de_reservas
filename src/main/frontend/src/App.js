@@ -48,44 +48,18 @@ function App() {
           <Route exact path="/nuevousuario" element={<NuevoUsuario />} />
           <Route exact path="/user/confirmed" element={<UserConfirmed />} />
           <Route exact path="/user/edit" element={<EditUser />} />
+		  
+
+          <Route exact path="/habitaciones" element={<Habitaciones />} />
+          <Route exact path="/nuevahabitacion" element={<NuevaHabitacion />} />
+          <Route exact path="/habitacion/edit" element={<EditarHabitacion />} />
+
+          <Route exact path="/pagos" element={<Pagos />} />
+          <Route exact path="/reservas" element={<Reservas />} />
         </Route>
       </Routes>
     </Router>
   );
 }
-
-/* function App() {
-  return (
-    <Router>
-      <NavBar />
-      <Box sx={{ display: 'flex' }}>
-        <SideBar />
-        <Routes>
-          <Route exact path="/mylogin" element={<Login />} />
-          <Route exact path="/registration" element={<Registration />} />
-          <Route exact path="/passwords/reset" element={<PasswordReset />} />
-          <Route exact path="/passwords/mailsent" element={<MailSent />} />
-          <Route
-            exact
-            path="/passwords/newpassword"
-            element={<NewPassword />}
-          />
-          <Route exact path="/usuarios" element={<Usuarios />} />
-          <Route exact path="/nuevousuario" element={<NuevoUsuario />} />
-          <Route exact path="/habitaciones" element={<Habitaciones />} />
-          <Route exact path="/nuevahabitacion" element={<NuevaHabitacion />} />
-          <Route exact path="/habitacion/edit" element={<EditarHabitacion />} />
-          <Route exact path="/user/confirmed" element={<UserConfirmed />} />
-          <Route exact path="/user/edit" element={<EditUser />} />
-          <Route exact path="/pagos" element={<Pagos />} />
-          {/*<Route exact path="/nuevopago" element={<NuevoPago />} />*/}
-          <Route exact path="/reservas" element={<Reservas />} />
-          {/*<Route exact path="/reserva/edit" element={<EditReserva />} />*/}
-
-        </Routes>
-      </Box>
-    </Router>
-  );
-} */
 
 export default App;

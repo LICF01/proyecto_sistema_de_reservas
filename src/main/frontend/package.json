@@ -1,7 +1,7 @@
 {
   "name": "booking-system",
-  "homepage": "https://spring-boot-sistema-booking.herokuapp.com",
-  "proxy": "https://spring-boot-sistema-booking.herokuapp.com",
+  "homepage": "http://spring-boot-sistema-booking.herokuapp.com",
+  "proxy": "http://spring-boot-sistema-booking.herokuapp.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

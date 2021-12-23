@@ -1,20 +1,17 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LoginIcon from '@mui/icons-material/Login';
-import Link from './FormUI/LinkWrapper';
+import KingBedIcon from '@mui/icons-material/KingBed';
+import BookOnlineIcon from '@mui/icons-material/BookOnline';
+import PaymentsIcon from '@mui/icons-material/Payments';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -50,15 +47,27 @@ const DrawerWrapper = () => {
               <ListItemText primary="Usuarios" />
             </ListItem>
           </List>
+            <ListItem button key="habitaciones" onClick={(event) => handleClicks("/habitaciones")}>
+              <ListItemIcon>
+                <KingBedIcon />
+              </ListItemIcon>
+              <ListItemText primary="habitaciones" />
+            </ListItem>
+            <ListItem button key="reservas" onClick={(event) => handleClicks("/reservas")}>
+              <ListItemIcon>
+                <BookOnlineIcon />
+              </ListItemIcon>
+              <ListItemText primary="reservas" />
+            </ListItem>
+            <ListItem button key="pagos" onClick={(event) => handleClicks("/pagos")}>
+              <ListItemIcon>
+                <PaymentsIcon />
+              </ListItemIcon>
+              <ListItemText primary="pagos" />
+            </ListItem>
           <Divider />
           <List>
             <ListItem button key="Login" onClick={(event) => handleClicks("/mylogin")}>
-              <ListItemIcon>
-                <LoginIcon />
-              </ListItemIcon>
-              <ListItemText primary="login" />
-            </ListItem>
-            <ListItem button key="" onClick={(event) => handleClicks("/mylogin")}>
               <ListItemIcon>
                 <LoginIcon />
               </ListItemIcon>
