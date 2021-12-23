@@ -20,9 +20,9 @@ public class ReservaConfig {
         return args -> {
             Reserva reserva1 = new Reserva(
                     clienteService.get(3L),
-                    habitacionService.getHabitacionbyID(2L),
-                    LocalDate.parse("2021-11-29"),
-                    LocalDate.parse("2021-11-30"),
+                    habitacionService.getHabitacionbyID(1L),
+                    LocalDate.parse("2022-01-05"),
+                    LocalDate.parse("2022-01-07"),
                     2,
                     0,
                     350000
@@ -30,8 +30,8 @@ public class ReservaConfig {
             Reserva reserva2 = new Reserva(
                     clienteService.get(3L),
                     habitacionService.getHabitacionbyID(2L),
-                    LocalDate.parse("2021-12-20"),
-                    LocalDate.parse("2021-12-25"),
+                    LocalDate.parse("2022-02-20"),
+                    LocalDate.parse("2022-02-25"),
                     2,
                     2,
                     550000
