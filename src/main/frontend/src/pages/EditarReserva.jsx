@@ -24,7 +24,7 @@ function EditarReserva() {
 
     const INITIAL_FORM_STATE = {
         habitacion: {
-            codhabitacion: state.habitacion.codhabitacion,
+            codHabitacion: state.habitacion.codHabitacion
         },
         fechaIngreso: state.fechaIngreso,
         fechaSalida: state.fechaSalida,
@@ -34,7 +34,8 @@ function EditarReserva() {
 
     const handleSubmit = (values) => {
         axios.put('/api/reserva/' + state.codReserva, values).then((response) => {
-            // console.log(values)
+            console.log(values)
+            console.log(state.codReserva)
             alert(response.data.message);
             navigate('/reservas');
         }).catch ((error) => {
@@ -85,6 +86,9 @@ function EditarReserva() {
                                             <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
                                                 Modificar Datos de la Reserva
                                             </Typography>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField name="habitacion.codHabitacion" label="N° Habitación" />
                                         </Grid>
                                         <Grid item xs={6}>
                                             <TextField name="fechaIngreso" label="Fecha de Ingreso (AAAA/MM/DD)" />

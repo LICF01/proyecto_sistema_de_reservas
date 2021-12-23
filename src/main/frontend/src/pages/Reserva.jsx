@@ -108,29 +108,29 @@ const Reserva = () => {
           columns={columns}
           data={reservas}
           title="Lista de reservas"
-          // actions={[
-          //   {
-          //     icon: 'edit',
-          //     tooltip: 'Editar reserva',
-          //     onClick: (event, rowData) => {
-          //       selectReserva(rowData, 'edit');
-          //     },
-          //   },
-          //   {
-          //     icon: 'delete',
-          //     tooltip: 'Eliminar reserva',
-          //     onClick: (event, rowData) => {
-          //       setUser(rowData);
-          //       handleAlertOpen();
-          //     },
-          //   },
-          // ]}
-          // options={{ actionsColumnIndex: -1 }}
-          // localization={{
-          //   header: {
-          //     actions: 'Acciones',
-          //   },
-          // }}
+          actions={[
+            {
+              icon: 'edit',
+              tooltip: 'Editar reserva',
+              onClick: (event, rowData) => {
+                selectReserva(rowData, 'edit');
+              },
+            },
+            {
+              icon: 'delete',
+              tooltip: 'Eliminar reserva',
+              onClick: (event, rowData) => {
+                setUser(rowData);
+                handleAlertOpen();
+              },
+            },
+          ]}
+          options={{ actionsColumnIndex: -1 }}
+          localization={{
+            header: {
+              actions: 'Acciones',
+            },
+          }}
           components={{
             Toolbar: (props) => (
               <Box

@@ -61,6 +61,7 @@ function App() {
 
 
           <Route exact path="/reservas" element={<Reservas />} />
+          <Route exact path="/reserva/edit" element={<EditReserva />} />
         </Route>
       </Routes>
     </Router>
