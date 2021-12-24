@@ -74,7 +74,7 @@ const Habitaciones = () => {
             //setResponse(response.data.message)
             alert(response.data.message)
             handleMessageOpen();
-            navigate(0);
+			getData();
         })
     };
 

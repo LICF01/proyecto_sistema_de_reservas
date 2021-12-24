@@ -83,7 +83,7 @@ const Reserva = () => {
     axios.delete('/api/reserva/' + reserva.codReserva).then((response) => {
       alert(response.data.message)
       handleMessageOpen();
-      navigate(0);
+	  getData();
     })
   };
 

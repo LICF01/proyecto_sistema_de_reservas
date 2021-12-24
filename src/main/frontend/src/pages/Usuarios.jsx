@@ -75,7 +75,7 @@ const Usuarios = () => {
     axios.delete('/api/usuario/' + user.id).then((response) => {
       setResponse(response.data);
       handleMessageOpen();
-      navigate(0);
+	  getData();
     });
   };
 
@@ -167,7 +167,6 @@ const Usuarios = () => {
         >
           <Box sx={modalStyle}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               {response.message}

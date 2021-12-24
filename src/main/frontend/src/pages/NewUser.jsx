@@ -117,7 +117,7 @@ function Registration() {
                       <TextField name="telefono" label="Telefono" type="tel" />
                     </Grid>
                     <Grid item xs={6}>
-                      <TextField name="fechaNac" label="Fecha de nacimiento" />
+                      <TextField name="fechaNac" label="Fecha de nacimiento (dd/MM/yyyy)" />
                     </Grid>
                     <Grid item xs={6}>
                       <TextField
