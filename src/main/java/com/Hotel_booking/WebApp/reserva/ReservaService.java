@@ -96,7 +96,7 @@ public class ReservaService {
 
         //Buscar disponibilidad de Habitacion en fechas solicitadas y verificar que cantidad de personas coincidan con cantidad de camas disponibles en la habitacion
         Optional<Reserva> disponible = reservaRepository.findByHabitacionReserva(resNewInfo.getHabitacion().getCodHabitacion(), resNewInfo.getFechaIngreso(), resNewInfo.getFechaSalida());
-        if(disponible.isPresent()) {
+        if(disponible.isPresent() && (disponible.get().getCodReserva() != ID)) {
             throw new CustomErrorException(HttpStatus.BAD_REQUEST, "La habitacion no se encuentra disponible en la fecha solicitada");
         }
         else {
@@ -134,10 +134,10 @@ public class ReservaService {
                 reservaRepository.deleteById(IDReserva);
                 throw new CustomErrorException(HttpStatus.OK, "Reserva correctamente eliminada");
             } else {
-                throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar una reserva con pagos");
+                throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar una reserva con pagos");
             }
         } else {
-            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar una reserva con fecha de inicio pasada");
+            throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar una reserva con fecha de inicio pasada");
         }
     }
 

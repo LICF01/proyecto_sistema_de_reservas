@@ -42,6 +42,7 @@ Los siguientes endpoints que son capaces de recibir requests son las siguientes
 - `/api/usuarios`
 - `/api/habitacion`
 - `/api/reserva`
+- `/api/pago`
 
 Ademas, se implementó una muestra de login/logout a través de un formulario web con validaciones de los campos
 

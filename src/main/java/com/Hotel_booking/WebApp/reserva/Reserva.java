@@ -31,7 +31,6 @@ public class Reserva {
     private long codReserva;
 
     @ManyToOne()
-    @JsonBackReference
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
@@ -79,8 +78,7 @@ public class Reserva {
         this.fechaReserva = LocalDate.now();
     }
 
-    public Reserva(Habitacion habitacion, LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos) {
-        this.habitacion = habitacion;
+    public Reserva(LocalDate fechaIngreso, LocalDate fechaSalida, int cantidadAdultos, int cantidadNinhos) {
         this.fechaIngreso = fechaIngreso;
         this.fechaSalida = fechaSalida;
         this.cantidadAdultos = cantidadAdultos;

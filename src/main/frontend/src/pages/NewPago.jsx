@@ -9,58 +9,41 @@ import Button from '../components/FormUI/ButtonWrapper';
 import { useNavigate } from 'react-router-dom';
 
 const INITIAL_FORM_STATE = {
-    nombre: '',
-    cantidadPersonas: '',
-    tipoHabitacion: '',
-    cocinaSN: '',
-    tvhabitacion: '',
-    camaExtraSN: '',
-    precioAdulto: '',
-    precioNinho: '',
-    precioMinimo: '',
+    montoPago: '',
+    metodoPago: '',
+    reserva: {
+        codReserva: ''
+    }
 };
 
 const FORM_VALIDATION = Yup.object().shape({
-    nombre: Yup.string().required('Obligatorio'),
-    cantidadPersonas: Yup.number().min(1, 'Debe ingresar un número del 1 al 6').max(6, 'Debe ingresar un número del 1 al 6').positive('Debe ingresar un número del 1 al 6').integer().required('Obligatorio'),
-    tipoHabitacion: Yup.string().required('Obligatorio'),
-    cocinaSN: Yup.string().required('Obligatorio'),
-    tvhabitacion: Yup.string().required('Obligatorio'),
-    camaExtraSN: Yup.string().required('Obligatorio'),
-    precioAdulto: Yup.number().positive('Debe ingresar un numero positivo').integer().required('Obligatorio'),
-    precioNinho: Yup.number().positive('Debe ingresar un numero positivo').integer().required('Obligatorio'),
-    precioMinimo: Yup.number().positive('Debe ingresar un numero positivo').integer().required('Obligatorio'),
+    metodoPago: Yup.string().required('Obligatorio'),
+    montoPago: Yup.number().positive('Debe ingresar un numero positivo').integer().required('Obligatorio'),
 });
 
 
-function NewHabitacion() {
+function NewPago() {
     let navigate = useNavigate();
 
-    const handleCancel = () => navigate('/habitaciones');
+    const handleCancel = () => navigate('/pagos');
 
     const handleSubmit= async (values) => {
-        console.log(values)
-        // axios.post('/api/habitacion', values).then((response) => {
-        //     alert(response.data.message);
-        //     navigate('/habitaciones');
-        // });
-        const response = await fetch('/api/habitacion', {
+
+        const response = await fetch('/api/pago', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(values)
-        }).catch ((error) => {
-            alert(error.response.data.message);
         });
+        console.log(response)
 
         if (!(response.status === 201)) return alert('Debe ingresar los datos correctos')
 
-        const data = await response.json();
+        navigate('/pagos');
+        //const data = await response.json();
 
-
-        navigate('/habitaciones');
     };
 
 
@@ -94,55 +77,25 @@ function NewHabitacion() {
                                     <Grid container spacing={3}>
                                         <Grid item container xs={12} justifyContent="left">
                                             <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
-                                                Ingresar los datos de la habitacion:
+                                                Ingresar los datos del pago:
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={4}>
-                                            <TextField name="nombre" label="Nombre" autoFocus />
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <TextField name="cantidadPersonas" label="Cantidad de Personas" />
-                                        </Grid>
-                                        <Grid item xs={4}>
                                             <TextField
-                                                name="tipoHabitacion"
-                                                label="Tipo de Habitacion"
+                                                name="metodoPago"
+                                                label="Metodo de Pago"
                                             />
                                         </Grid>
                                         <Grid item xs={4}>
                                             <TextField
-                                                name="cocinaSN"
-                                                label="Cocina Si/No"
+                                                name="montoPago"
+                                                label="Monto de Pago"
                                             />
                                         </Grid>
                                         <Grid item xs={4}>
                                             <TextField
-                                                name="tvhabitacion"
-                                                label="TV Si/No"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <TextField
-                                                name="camaExtraSN"
-                                                label="Cama Extra Si/No"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <TextField
-                                                name="precioAdulto"
-                                                label="Precio Adulto"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <TextField
-                                                name="precioNinho"
-                                                label="Precio Niño"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <TextField
-                                                name="precioMinimo"
-                                                label="Precio Minimo"
+                                                name="reserva.codReserva"
+                                                label="Nro Reserva"
                                             />
                                         </Grid>
                                         <Grid container item justifyContent="flex-end" spacing={2}>
@@ -168,4 +121,4 @@ function NewHabitacion() {
     );
 }
 
-export default NewHabitacion;
+export default NewPago;

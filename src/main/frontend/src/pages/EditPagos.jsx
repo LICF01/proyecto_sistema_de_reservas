@@ -8,45 +8,33 @@ import TextField from '../components/FormUI/TextFieldWrapper';
 import Button from '../components/FormUI/ButtonWrapper';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+
 const FORM_VALIDATION = Yup.object().shape({
-    fechaIngreso: Yup.string().required('Obligatorio'),
-    fechaSalida: Yup.string().required('Obligatorio'),
-    cantidadAdultos: Yup.string().required('Obligatorio'),
-    cantidadNinhos: Yup.string().required('Obligatorio'),
+    estado: Yup.string().required('Obligatorio'),
 });
 
-function EditarReserva() {
+function EditPago() {
     let navigate = useNavigate();
     const { state } = useLocation();
-    // console.log(state);
 
-    const handleCancel = () => navigate('/reservas');
+    const handleCancel = () => navigate('/pagos');
 
     const INITIAL_FORM_STATE = {
-        habitacion: {
-            codHabitacion: state.habitacion.codHabitacion
-        },
-        fechaIngreso: state.fechaIngreso,
-        fechaSalida: state.fechaSalida,
-        cantidadAdultos: state.cantidadAdultos,
-        cantidadNinhos: state.cantidadNinhos,
+        estado: 'INACTIVO',
+
     };
 
     const handleSubmit = (values) => {
-        axios.put('/api/reserva/' + state.codReserva, values).then((response) => {
-            console.log(values)
-            console.log(state.codReserva)
+        axios.put('/api/pago/' + state.codPago, values).then((response) => {
             alert(response.data.message);
-            navigate('/reservas');
+            navigate('/pagos');
         }).catch ((error) => {
-            console.log(values)
             alert(error.response.data.message);
         });
-        console.log(INITIAL_FORM_STATE)
+
     };
 
     return (
-
         <Container component="div" maxWidth="sm">
             <Grid
                 container
@@ -58,6 +46,7 @@ function EditarReserva() {
             >
                 <Grid item>
                     <Paper variant="outlined" elevation={0}>
+
                         <Box p={5}>
                             <Formik
                                 initialValues={{
@@ -68,7 +57,6 @@ function EditarReserva() {
                                 validateOnBlur={false}
                                 onSubmit={(values) => {
                                     handleSubmit(values);
-
                                 }}
                             >
                                 <Form>
@@ -80,33 +68,17 @@ function EditarReserva() {
                                             flexDirection="column"
                                             alignItems="center"
                                         >
-                                            <Typography variant="h3">
-                                                {state.nombre}
+                                            <Typography variant="h4">
+                                                Modificar Datos del Pago
                                             </Typography>
                                             <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
-                                                Modificar Datos de la Reserva
+                                                Código de Pago: {state.codPago}
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <TextField name="habitacion.codHabitacion" label="N° Habitación" />
                                         </Grid>
-                                        <Grid item xs={6}>
-                                            <TextField name="fechaIngreso" label="Fecha de Ingreso (AAAA/MM/DD)" />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <TextField name="fechaSalida" label="Fecha de Salida (AAAA/MM/DD)" />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <TextField
-                                                name="cantidadAdultos"
-                                                label="Cantidad Adultos"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <TextField
-                                                name="cantidadNinhos"
-                                                label="Cantidad Niños"
-                                            />
+                                        <Grid item xs={12}>
+                                            <TextField name="estado" label="Estado" autoFocus />
                                         </Grid>
                                         <Grid container item justifyContent="center" spacing={2}>
                                             <Grid item xs={5}>
@@ -131,4 +103,4 @@ function EditarReserva() {
     );
 }
 
-export default EditarReserva;
+export default EditPago;

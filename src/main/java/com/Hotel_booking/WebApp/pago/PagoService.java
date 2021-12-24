@@ -99,11 +99,11 @@ public class PagoService {
                 throw new CustomErrorException(HttpStatus.OK, "Pago correctamente eliminado");
 
             } else {
-                throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar un pago activo");
+                throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar un pago activo");
             }
 
         } else {
-            throw new CustomErrorException(HttpStatus.BAD_REQUEST, "No se puede eliminar pagos de una reserva pasada");
+            throw new CustomErrorException(HttpStatus.OK, "No se puede eliminar pagos de una reserva pasada");
         }
 
     }

@@ -10,6 +10,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 const modalStyle = {
     position: 'absolute',
@@ -24,14 +26,14 @@ const modalStyle = {
 };
 
 const columns = [
-    { field: 'codPago', title: 'ID Pago' },
+    { field: 'codPago', title: 'ID' },
     { field: 'estado', title: 'Estado' },
     {
         field: 'fechaPago',
         title: 'Fecha de Pago',
     },
     { field: 'metodoPago', title: 'Método de Pago' },
-    { field: 'montoPago', title: 'Monto del Pago' },
+    { field: 'montoPago', title: 'Monto de Pago' },
     { field: 'reserva.codReserva', title: 'Código Reserva' },
     { field: 'reserva.cliente.nombre', title: 'Cliente' },
     { field: 'reserva.habitacion.nombre', title: 'Habitación' },
@@ -66,13 +68,14 @@ const Habitaciones = () => {
         });
     };
 
-    const deleteUser = () => {
+    const deletePago = () => {
         handleAlertClose();
-        axios.delete('/api/pago/' + pago.pagoid).then((response) => {
-            setResponse(response.data);
+        axios.delete('/api/pago/' + pago.codPago).then((response) => {
+            //setResponse(response.data.message)
+            alert(response.data.message)
             handleMessageOpen();
             navigate(0);
-        });
+        })
     };
 
     React.useEffect(() => {
@@ -82,7 +85,7 @@ const Habitaciones = () => {
     const selectPago = (rowData, action) => {
         action === 'edit'
             ? navigate('/pago/edit', { state: rowData })
-            : navigate('/pago/delete', rowData.id);
+            : navigate('/pago/delete', rowData.codPago);
     };
 
     const handleClick = () => navigate('/nuevopago');
@@ -94,29 +97,29 @@ const Habitaciones = () => {
                     columns={columns}
                     data={pagos}
                     title="Lista de pagos"
-                    // actions={[
-                    //     {
-                    //         icon: 'edit',
-                    //         tooltip: 'Editar pago',
-                    //         onClick: (event, rowData) => {
-                    //             selectPago(rowData, 'edit');
-                    //         },
-                    //     },
-                    //     {
-                    //         icon: 'delete',
-                    //         tooltip: 'Eliminar pago',
-                    //         onClick: (event, rowData) => {
-                    //             setPago(rowData);
-                    //             handleAlertOpen();
-                    //         },
-                    //     },
-                    // ]}
-                    // options={{ actionsColumnIndex: -1 }}
-                    // localization={{
-                    //     header: {
-                    //         actions: 'Acciones',
-                    //     },
-                    // }}
+                    actions={[
+                        {
+                            icon: 'edit',
+                            tooltip: 'Editar pago',
+                            onClick: (event, rowData) => {
+                                selectPago(rowData, 'edit');
+                            },
+                        },
+                        {
+                            icon: 'delete',
+                            tooltip: 'Eliminar pago',
+                            onClick: (event, rowData) => {
+                                setPago(rowData);
+                                handleAlertOpen();
+                            },
+                        },
+                    ]}
+                    options={{ actionsColumnIndex: -1 }}
+                    localization={{
+                        header: {
+                            actions: 'Acciones',
+                        },
+                    }}
                     components={{
                         Toolbar: (props) => (
                             <Box
@@ -125,9 +128,9 @@ const Habitaciones = () => {
                                 <Box sx={{ flexGrow: 1, paddingRight: 5 }}>
                                     <MTableToolbar {...props} />
                                 </Box>
-                                {/*<Button variant="outlined" onClick={handleClick}>*/}
-                                {/*    Añadir Pago*/}
-                                {/*</Button>*/}
+                                <Button variant="outlined" onClick={handleClick}>
+                                    Añadir Pago
+                                </Button>
                             </Box>
                         ),
                     }}
@@ -140,7 +143,7 @@ const Habitaciones = () => {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title" sx={{}}>
-                        El siguiente pago sera eliminado {pago.pagoID}
+                        El siguiente pago sera eliminado {pago.codPago}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
@@ -149,7 +152,7 @@ const Habitaciones = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleAlertClose}>Cancelar</Button>
-                        <Button onClick={deleteUser} autoFocus>
+                        <Button onClick={deletePago} autoFocus>
                             Aceptar
                         </Button>
                     </DialogActions>
